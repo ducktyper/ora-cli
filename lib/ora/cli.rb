@@ -1,4 +1,4 @@
-require "ora/cli/version"
+Dir[File.dirname(__FILE__) + '/cli/**/*.rb'].each {|file| require file }
 
 module Ora
   module Cli
