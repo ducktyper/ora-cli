@@ -1,7 +1,7 @@
 module Ora
   module Cli
     class CreateNewFeatureBranch
-      def run
+      def run(stdins = [])
       end
     end
   end
