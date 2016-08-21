@@ -4,3 +4,7 @@ require 'ora/cli'
 require 'minitest/autorun'
 
 include Ora::Cli
+include Bash
+
+Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each {|file| require file }
+include SetupTmp
