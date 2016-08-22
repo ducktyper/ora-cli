@@ -20,4 +20,8 @@ class BashTest < Minitest::Test
     bash(from: "tmp", silent: true) {"touch create_file_test.txt"}
     assert `ls tmp`.include? "create_file_test.txt"
   end
+
+  def test_output
+    assert bash {"ls"}.include?('test')
+  end
 end
