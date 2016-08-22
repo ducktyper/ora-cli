@@ -6,7 +6,8 @@ require 'minitest/autorun'
 include Ora::Cli
 include Bash
 
+REPOSITORY = "tmp/repository"
+
 Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each {|file| require file }
 include SetupTmp
-
-REPOSITORY = "tmp/repository"
+include GitHelper
