@@ -9,7 +9,7 @@ class CreateNewFeatureBranchTest < Minitest::Test
   end
 
   def test_run_method_defined
-    CreateNewFeatureBranch.new.run(["new_feature"])
+    CreateNewFeatureBranch.new(REPOSITORY).run(["new_feature"])
     assert bash(from: REPOSITORY) {"git status"}.include? "new_feature"
   end
 end
