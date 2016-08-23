@@ -11,3 +11,4 @@ REPOSITORY = "tmp/repository"
 Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each {|file| require file }
 include SetupTmp
 include GitHelper
+include BashHelper
