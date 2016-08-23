@@ -10,6 +10,7 @@ module Ora::Cli
       bash(from: @from, silent: @silent) do
         "
         git checkout develop
+        git pull origin develop
         git checkout -b #{branch_name}
         "
       end

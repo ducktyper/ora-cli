@@ -19,4 +19,11 @@ class CreateNewFeatureBranchTest < Minitest::Test
     CreateNewFeatureBranch.new(REPOSITORY, silent: true).run(["new_feature"])
     assert bash_repo("ls").include? "develop.rb"
   end
+
+  def test_pull_develop_branch
+    commit_remote_branch(:develop, "develop.rb")
+    CreateNewFeatureBranch.new(REPOSITORY, silent: true).run(["new_feature"])
+    checkout(:develop)
+    assert bash_repo("ls").include? "develop.rb"
+  end
 end
