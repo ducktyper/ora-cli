@@ -26,4 +26,10 @@ class CreateNewFeatureBranchTest < Minitest::Test
     checkout(:develop)
     assert bash_repo("ls").include? "develop.rb"
   end
+
+  def test_error_on_dirty_branch
+    dirty_branch(:develop, "dirty.rb")
+    out = CreateNewFeatureBranch.new(REPOSITORY, silent: true).run(["new_feature"])
+    assert out.include? "ERROR"
+  end
 end

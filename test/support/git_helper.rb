@@ -22,6 +22,13 @@ module GitHelper
     ")
   end
 
+  def dirty_branch(branch_name, file_name)
+    bash_repo("
+      git checkout #{branch_name}
+      touch #{file_name}
+    ")
+  end
+
   def checkout(branch_name)
     bash_repo("git checkout #{branch_name}")
   end
