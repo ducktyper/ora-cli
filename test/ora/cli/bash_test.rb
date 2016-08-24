@@ -24,4 +24,8 @@ class BashTest < Minitest::Test
   def test_output
     assert bash {"ls"}.include?('test')
   end
+
+  def test_capture_errors
+    assert bash {"rm unknown.file"}.include?('No such file or directory')
+  end
 end
