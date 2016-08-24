@@ -10,6 +10,11 @@ module Ora::Cli
       @branch = current_branch
     end
     def run(inputs = [])
+      if dirty?
+        puts_red "Please clean repo!"
+        return "ERROR"
+      end
+
       bash(from: @from, silent: @silent) do
         "
         git checkout staging
@@ -23,6 +28,10 @@ module Ora::Cli
     private
     def current_branch
       bash(from: @from, silent: true) {"git branch | grep \\*"}.sub("*", "").strip
+    end
+
+    def dirty?
+      !bash(from: @from, silent: true) {"git status"}.include? 'nothing to commit'
     end
   end
 end

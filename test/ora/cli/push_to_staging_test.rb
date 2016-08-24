@@ -26,6 +26,12 @@ class PushToStagingTest < Minitest::Test
     assert_equal "feature", current_branch
   end
 
+  def test_error_on_dirty_branch
+    dirty_branch(:feature, "dirty.rb")
+    subject.run
+    assert subject.run(["new_feature"]).include? "ERROR"
+  end
+
   private
   def subject
     PushToStaging.new(REPOSITORY, silent: true)
