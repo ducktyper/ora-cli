@@ -26,6 +26,18 @@ class PushToStagingTest < Minitest::Test
     assert_equal "feature", current_branch
   end
 
+  def test_pull_origin_staging
+    commit_remote_branch(:staging, "remote_file.txt")
+    subject.run
+    assert bash_repo('ls').include? "remote_file.txt"
+  end
+
+  def test_merge_latest_develop
+    commit_remote_branch(:develop, "remote_file.txt")
+    subject.run
+    assert bash_repo('ls').include? "remote_file.txt"
+  end
+
   def test_error_on_dirty_branch
     dirty_branch(:feature, "dirty.rb")
     subject.run

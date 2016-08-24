@@ -17,7 +17,12 @@ module Ora::Cli
 
       bash(from: @from, silent: @silent) do
         "
+        git checkout develop
+        git pull origin develop
+        git checkout #{@branch}
+        git merge develop
         git checkout staging
+        git pull origin staging
         git merge #{@branch}
         git push origin staging
         git checkout #{@branch}
