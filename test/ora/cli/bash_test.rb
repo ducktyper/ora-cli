@@ -28,4 +28,14 @@ class BashTest < Minitest::Test
   def test_capture_errors
     assert bash {"rm unknown.file"}.include?('No such file or directory')
   end
+
+  def test_stop_run_rest_on_error
+    bash do
+      "
+      rm unknown.file
+      touch tmp/never-create.txt
+      "
+    end
+    assert !bash {"ls tmp"}.include?('never-create.txt')
+  end
 end
