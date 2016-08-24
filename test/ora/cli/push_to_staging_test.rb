@@ -40,7 +40,6 @@ class PushToStagingTest < Minitest::Test
 
   def test_error_on_dirty_branch
     dirty_branch(:feature, "dirty.rb")
-    subject.run
     assert subject.run(["new_feature"]).include? "ERROR"
   end
 
