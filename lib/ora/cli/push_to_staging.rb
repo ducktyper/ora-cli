@@ -15,6 +15,7 @@ module Ora::Cli
         git checkout staging
         git merge #{@branch}
         git push origin staging
+        git checkout #{@branch}
         "
       end
     end

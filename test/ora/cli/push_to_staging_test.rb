@@ -21,6 +21,11 @@ class PushToStagingTest < Minitest::Test
     assert bash_repo('git push origin staging').include? "up-to-date"
   end
 
+  def test_stay_on_feature_branch
+    subject.run
+    assert_equal "feature", current_branch
+  end
+
   private
   def subject
     PushToStaging.new(REPOSITORY, silent: true)
@@ -29,5 +34,9 @@ class PushToStagingTest < Minitest::Test
   def work_on_feature_branch
     bash_repo("git checkout -b feature")
     commit_branch(:feature, "test.txt")
+  end
+
+  def current_branch
+    bash_repo("git branch | grep \\*").sub("*", "").strip
   end
 end
