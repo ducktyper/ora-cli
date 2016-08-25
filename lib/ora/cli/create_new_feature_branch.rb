@@ -27,7 +27,7 @@ module Ora::Cli
 
     private
     def dirty?
-      !bash(from: @from, silent: true) {"git status"}.include? 'nothing to commit'
+      !bash("git status", from: @from, silent: true).include? 'nothing to commit'
     end
   end
 end
