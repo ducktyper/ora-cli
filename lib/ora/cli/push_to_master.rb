@@ -28,6 +28,9 @@ module Ora::Cli
         git checkout #{@branch}
         "
       end
+
+      puts_green "Paste below to slack"
+      puts ":merge: #{@branch} => develop\n:merge: develop => master\n:monorail: production"
     end
 
     private
