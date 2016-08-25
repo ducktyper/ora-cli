@@ -11,31 +11,36 @@ class BashTest < Minitest::Test
     `rm -rf tmp`
   end
 
-  def test_run_command
+  def test_run_command_in_param
+    bash("touch tmp/create_file_test.txt", silent: true)
+    assert `ls tmp`.include? "create_file_test.txt"
+  end
+
+  def test_run_command_in_block
     bash(silent: true) {"touch tmp/create_file_test.txt"}
     assert `ls tmp`.include? "create_file_test.txt"
   end
 
   def test_from
-    bash(from: "tmp", silent: true) {"touch create_file_test.txt"}
+    bash("touch create_file_test.txt", from: "tmp", silent: true)
     assert `ls tmp`.include? "create_file_test.txt"
   end
 
   def test_output
-    assert bash {"ls"}.include?('test')
+    assert bash("ls", silent: true).include?('test')
   end
 
   def test_capture_errors
-    assert bash {"rm unknown.file"}.include?('No such file or directory')
+    assert bash("rm unknown.file", silent: true).include?('No such file or directory')
   end
 
   def test_stop_run_rest_on_error
-    bash do
+    bash(silent: true) do
       "
       rm unknown.file
       touch tmp/never-create.txt
       "
     end
-    assert !bash {"ls tmp"}.include?('never-create.txt')
+    assert !bash("ls tmp", silent: true).include?('never-create.txt')
   end
 end

@@ -4,9 +4,9 @@ module Ora::Cli
   module Bash
     include Print
 
-    def bash(from: nil, silent: false)
+    def bash(commands = nil, from: nil, silent: false)
       success = true
-      yield.split("\n").map(&:strip).reject(&:empty?).map do |command|
+      (block_given? ? yield : commands).split("\n").map(&:strip).reject(&:empty?).map do |command|
         output = ''
         if success
           puts_green command unless silent
