@@ -38,9 +38,9 @@ class PushToStagingTest < Minitest::Test
     assert bash_repo('ls').include? "remote_file.txt"
   end
 
-  def test_error_on_dirty_branch
+  def test_stop_on_dirty_branch
     dirty_branch(:feature, "dirty.rb")
-    assert subject.run.include? "ERROR"
+    assert subject.run.empty?
   end
 
   private
