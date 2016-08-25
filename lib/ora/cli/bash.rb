@@ -33,7 +33,7 @@ module Ora::Cli
           puts_red command unless silent
         end
         output
-      end.join("\n")
+      end.map(&:strip).reject(&:empty?).join("\n")
     end
   end
 end
