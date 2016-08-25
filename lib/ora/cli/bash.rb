@@ -12,8 +12,10 @@ module Ora::Cli
           puts_green command unless silent
           if command.start_with? ":"
             unless (success = (method(command.sub(':', '')).call != false))
-              puts_red "Process Failed! Please resolve the issue above and run commands below manually\n"
-              puts_red command
+              unless silent
+                puts_red "Process Failed! Please resolve the issue above and run commands below manually\n"
+                puts_red command
+              end
             end
           else
             move        = "cd #{from} && " if from
@@ -21,8 +23,10 @@ module Ora::Cli
             output = `#{move}#{command}#{capture_err}`
             puts output unless silent
             unless (success = $?.success?)
-              puts_red "Process Failed! Please resolve the issue above and run commands below manually\n"
-              puts_red command
+              unless silent
+                puts_red "Process Failed! Please resolve the issue above and run commands below manually\n"
+                puts_red command
+              end
             end
           end
         else
