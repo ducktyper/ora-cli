@@ -11,7 +11,7 @@ module Ora::Cli
         if success
           puts_green command unless silent
           if command.start_with? ":"
-            unless (success = method(command.sub(':', '')).call)
+            unless (success = (method(command.sub(':', '')).call != false))
               puts_red "Process Failed! Please resolve the issue above and run commands below manually\n"
               puts_red command
             end
