@@ -26,11 +26,10 @@ module Ora::Cli
         git merge develop
         git push origin master
         git checkout #{@branch}
+        :show_slack_message
         "
       end
 
-      puts_green "Paste below to slack"
-      puts ":merge: #{@branch} => develop\n:merge: develop => master\n:monorail: production"
     end
 
     private
@@ -40,6 +39,11 @@ module Ora::Cli
 
     def dirty?
       !bash("git status", from: @from, silent: true).include? 'nothing to commit'
+    end
+
+    def show_slack_message
+      puts_green "Paste below to slack"
+      puts ":merge: #{@branch} => develop\n:merge: develop => master\n:monorail: production"
     end
   end
 end
