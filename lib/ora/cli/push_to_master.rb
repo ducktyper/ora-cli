@@ -4,12 +4,13 @@ module Ora::Cli
   class PushToMaster
     include Print
 
-    attr_reader :branch
+    attr_reader :branch, :inputs, :version
 
-    def initialize(from, silent: false)
+    def initialize(from, silent: false, inputs: [])
       @from   = from
       @silent = silent
       @branch = current_branch
+      @inputs = inputs
     end
     def run
       bash(from: @from, silent: @silent) do
@@ -23,7 +24,11 @@ module Ora::Cli
         git pull origin master
         git merge develop
         git push origin master
+        git fetch --tags
+        :set_version
         git checkout #{branch}
+        git tag -a "#{version}" -m "#{branch}"
+        git push --tags
         :show_slack_message
         '
       end
@@ -43,6 +48,36 @@ module Ora::Cli
     end
     def dirty?
       !bash('git status', from: @from, silent: true).include? 'nothing to commit'
+    end
+
+    def set_version
+      puts "Latest versions:"
+      puts latest_versions
+      puts "Enter to use #{recommend_version} or type new version:"
+      print_green "New Version: "
+      @version = ""
+      while @version.empty?
+        @version = Stdin.new(inputs).gets
+        @version = recommend_version if @version.empty?
+        unless version? @version
+          puts red "Invalid format!"
+          @version = ""
+        end
+      end
+    end
+    def version? text
+      text.match /^v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/
+    end
+    def latest_versions
+      @latest_versions ||=
+        bash('git tag', from: @from, silent: true).split("\n").
+          select {|tag| version? tag}.
+          map    {|tag| Gem::Version.create(tag.sub(/^v/, ''))}.sort.last(5).
+          map    {|ver| "v#{ver}"}
+    end
+    def recommend_version
+      @recommend_version ||=
+        latest_versions.last.to_s.sub(/\.(\d+)$/, '.') + ($1.to_i + 1).to_s
     end
 
     def show_slack_message

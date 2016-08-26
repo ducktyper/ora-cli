@@ -3,6 +3,7 @@ require 'test_helper'
 class PushToMasterTest < Minitest::Test
   def setup
     reset_tmp
+    set_versions
     work_on_feature_branch
   end
   def teardown
@@ -43,9 +44,14 @@ class PushToMasterTest < Minitest::Test
     assert subject.run.empty?
   end
 
+  def test_push_new_version
+    subject.run
+    assert remote_tags.include? "v0.0.0.2"
+  end
+
   private
   def subject
-    PushToMaster.new(REPOSITORY, silent: true)
+    PushToMaster.new(REPOSITORY, silent: true, inputs: [''])
   end
 
   def work_on_feature_branch
@@ -53,7 +59,25 @@ class PushToMasterTest < Minitest::Test
     commit_branch(:feature, "test.txt")
   end
 
+  def set_versions
+    bash_repo('
+      git checkout master
+      git tag -a "v0.0.0.1" -m "first version"
+      git push --tags
+      git checkout develop
+    ')
+  end
+
   def current_branch
     bash_repo('git branch | grep \\*').sub("*", "").strip
+  end
+
+  def remote_tags
+    bash_repo('
+      git checkout master
+      git tag | xargs git tag -d
+      git fetch --tags
+    ')
+    bash_repo('git tag')
   end
 end
