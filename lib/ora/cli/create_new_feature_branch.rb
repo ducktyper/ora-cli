@@ -1,16 +1,9 @@
-require 'ora/cli/print'
+require 'ora/cli/task'
 
 module Ora::Cli
-  class CreateNewFeatureBranch
-    include Print
+  class CreateNewFeatureBranch < Task
+    attr_reader :branch_name
 
-    attr_reader :branch_name, :inputs
-
-    def initialize(from, silent: false, inputs: [])
-      @from   = from
-      @silent = silent
-      @inputs = inputs
-    end
     def run
       bash(from: @from, silent: @silent) do
         '

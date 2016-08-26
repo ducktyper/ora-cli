@@ -1,16 +1,7 @@
-require 'ora/cli/print'
+require 'ora/cli/task'
 
 module Ora::Cli
-  class PushFeatureBranch
-    include Print
-
-    attr_reader :branch
-
-    def initialize(from, silent: false)
-      @from   = from
-      @silent = silent
-      @branch = current_branch
-    end
+  class PushFeatureBranch < Task
     def run
       bash(from: @from, silent: @silent) do
         '
@@ -25,10 +16,6 @@ module Ora::Cli
     end
 
     private
-    def current_branch
-      bash('git branch | grep \\*', from: @from, silent: true).sub("*", "").strip
-    end
-
     def clean_branch!
       if dirty?
         puts_red "Please clean the feature branch '#{branch}'!"
