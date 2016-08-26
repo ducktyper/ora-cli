@@ -4,27 +4,24 @@ module Ora::Cli
   class PushToMaster < Task
     attr_reader :version
 
-    def run
-      bash(from: @from, silent: @silent) do
-        '
-        :clean_branch!
-        git checkout develop
-        git pull origin develop
-        git merge #{branch}
-        git push origin develop
-        git checkout master
-        git pull origin master
-        git merge develop
-        git push origin master
-        git fetch --tags
-        :set_version
-        git checkout #{branch}
-        git tag -a "#{version}" -m "#{branch}"
-        git push --tags
-        :show_slack_message
-        '
-      end
-
+    def commands
+      '
+      :clean_branch!
+      git checkout develop
+      git pull origin develop
+      git merge #{branch}
+      git push origin develop
+      git checkout master
+      git pull origin master
+      git merge develop
+      git push origin master
+      git fetch --tags
+      :set_version
+      git checkout #{branch}
+      git tag -a "#{version}" -m "#{branch}"
+      git push --tags
+      :show_slack_message
+      '
     end
 
     private

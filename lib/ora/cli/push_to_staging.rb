@@ -2,22 +2,21 @@ require 'ora/cli/task'
 
 module Ora::Cli
   class PushToStaging < Task
-    def run
-      bash(from: @from, silent: @silent) do
-        '
-        :clean_branch!
-        git checkout develop
-        git pull origin develop
-        git checkout #{branch}
-        git merge develop
-        git checkout staging
-        git pull origin staging
-        git merge #{branch}
-        git push origin staging
-        git checkout #{branch}
-        :show_slack_message
-        '
-      end
+
+    def commands
+      '
+      :clean_branch!
+      git checkout develop
+      git pull origin develop
+      git checkout #{branch}
+      git merge develop
+      git checkout staging
+      git pull origin staging
+      git merge #{branch}
+      git push origin staging
+      git checkout #{branch}
+      :show_slack_message
+      '
     end
 
     private

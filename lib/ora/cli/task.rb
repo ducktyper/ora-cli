@@ -14,7 +14,11 @@ module Ora::Cli
     end
 
     def run
-      raise 'Please override it in subclass!'
+      bash(commands, from: @from, silent: @silent)
+    end
+
+    def commands
+      raise "Override this method in subclass"
     end
 
     private
