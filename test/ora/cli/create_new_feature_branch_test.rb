@@ -32,8 +32,13 @@ class CreateNewFeatureBranchTest < Minitest::Test
     assert subject.run.empty?
   end
 
+  def test_branch_name_validation
+    subject(["having space", "", "azAZ09/-_"]).run
+    assert bash_repo('git status').include? "azAZ09/-_"
+  end
+
   private
-  def subject
-    CreateNewFeatureBranch.new(REPOSITORY, silent: true, inputs: ["new_feature"])
+  def subject(inputs = ["new_feature"])
+    CreateNewFeatureBranch.new(REPOSITORY, silent: true, inputs: inputs)
   end
 end
