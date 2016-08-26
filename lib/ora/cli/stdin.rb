@@ -5,7 +5,7 @@ module Ora::Cli
     end
 
     def gets
-      @inputs.pop || STDIN.get
+      @inputs.pop || STDIN.gets.chomp.strip
     end
   end
 end
