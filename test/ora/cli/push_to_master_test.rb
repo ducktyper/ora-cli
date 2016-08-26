@@ -49,9 +49,14 @@ class PushToMasterTest < Minitest::Test
     assert remote_tags.include? "v0.0.0.2"
   end
 
+  def test_custom_version
+    subject(['v1.1.1.1']).run
+    assert remote_tags.include? "v1.1.1.1"
+  end
+
   private
-  def subject
-    PushToMaster.new(REPOSITORY, silent: true, inputs: [''])
+  def subject(inputs = [''])
+    PushToMaster.new(REPOSITORY, silent: true, inputs: inputs)
   end
 
   def work_on_feature_branch
