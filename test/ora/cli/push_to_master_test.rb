@@ -44,7 +44,7 @@ class PushToMasterTest < Minitest::Test
     assert subject.run.empty?
   end
 
-  def test_push_new_version
+  def test_push_new_version_by_incresing_build_number
     subject.run
     assert remote_tags.include? "v0.0.0.2"
   end
