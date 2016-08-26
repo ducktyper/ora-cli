@@ -54,6 +54,11 @@ class PushToMasterTest < Minitest::Test
     assert remote_tags.include? "v1.1.1.1"
   end
 
+  def test_validate_version
+    subject(['v1.1.1', 'invalid', 'v1.1.1.1']).run
+    assert remote_tags.include? "v1.1.1.1"
+  end
+
   private
   def subject(inputs = [''])
     PushToMaster.new(REPOSITORY, silent: true, inputs: inputs)
