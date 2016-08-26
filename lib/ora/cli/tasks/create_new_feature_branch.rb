@@ -16,6 +16,7 @@ module Ora::Cli
 
     private
     def set_branch_name
+      print_plain 'Type new branch name: '
       @branch_name = Stdin.new(inputs).gets
     end
   end
