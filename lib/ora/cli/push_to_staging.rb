@@ -21,16 +21,6 @@ module Ora::Cli
     end
 
     private
-    def clean_branch!
-      if dirty?
-        puts_red "Please clean the feature branch '#{branch}'!"
-        return false
-      end
-    end
-    def dirty?
-      !bash('git status', from: @from, silent: true).include? 'nothing to commit'
-    end
-
     def show_slack_message
       puts_green "Paste below to slack"
       puts ":merge: #{branch} => staging\n:monorail: staging"
