@@ -11,7 +11,7 @@ module Ora::Cli
       @silent = silent
       @branch = current_branch
     end
-    def run(inputs = [])
+    def run
       bash(from: @from, silent: @silent) do
         '
         :clean_branch!
