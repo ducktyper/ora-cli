@@ -4,17 +4,17 @@ module Ora::Cli
   class CreateNewFeatureBranch
     include Print
 
-    attr_reader :branch_name
+    attr_reader :branch_name, :inputs
 
-    def initialize(from, silent: false)
+    def initialize(from, silent: false, inputs: [])
       @from   = from
       @silent = silent
+      @inputs = inputs
     end
-    def run(inputs = [])
-      @branch_name = Stdin.new(inputs).gets
-
+    def run
       bash(from: @from, silent: @silent) do
         '
+        :set_branch_name
         :clean_branch!
         git checkout develop
         git pull origin develop
@@ -32,6 +32,10 @@ module Ora::Cli
     end
     def dirty?
       !bash('git status', from: @from, silent: true).include? 'nothing to commit'
+    end
+
+    def set_branch_name
+      @branch_name = Stdin.new(inputs).gets
     end
   end
 end
