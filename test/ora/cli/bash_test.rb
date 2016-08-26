@@ -63,6 +63,10 @@ class BashTest < Minitest::Test
     assert_equal "a", bash("echo '' \n echo 'a'", silent: true)
   end
 
+  def test_inline_method
+    assert bash('#{inline_method}', silent: true).include?("test")
+  end
+
   private
   def touch_file_a
     bash("touch file_a", from: "tmp", silent: true)
@@ -70,5 +74,9 @@ class BashTest < Minitest::Test
 
   def return_false
     false
+  end
+
+  def inline_method
+    "ls"
   end
 end

@@ -20,7 +20,10 @@ module Ora::Cli
           else
             move        = "cd #{from} && " if from
             capture_err = " 2>&1"
-            output = `#{move}#{command}#{capture_err}`
+            raw_command = command.gsub(/#\{([\S]+)\}/) do
+              method(Regexp.last_match[1]).call
+            end
+            output = `#{move}#{raw_command}#{capture_err}`
             puts output unless silent
             unless (success = $?.success?)
               unless silent
