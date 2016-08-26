@@ -12,25 +12,25 @@ class PushToMasterTest < Minitest::Test
   def test_merge_to_develop
     subject.run
     checkout(:develop)
-    assert bash_repo("ls").include? "test.txt"
+    assert bash_repo('ls').include? "test.txt"
   end
 
   def test_push_develop
     subject.run
     checkout(:develop)
-    assert bash_repo("git push origin develop").include? "up-to-date"
+    assert bash_repo('git push origin develop').include? "up-to-date"
   end
 
   def test_merge_to_master
     subject.run
     checkout(:master)
-    assert bash_repo("ls").include? "test.txt"
+    assert bash_repo('ls').include? "test.txt"
   end
 
   def test_push_master
     subject.run
     checkout(:master)
-    assert bash_repo("git push origin master").include? "up-to-date"
+    assert bash_repo('git push origin master').include? "up-to-date"
   end
 
   def test_stay_on_feature_branch
@@ -49,11 +49,11 @@ class PushToMasterTest < Minitest::Test
   end
 
   def work_on_feature_branch
-    bash_repo("git checkout -b feature")
+    bash_repo('git checkout -b feature')
     commit_branch(:feature, "test.txt")
   end
 
   def current_branch
-    bash_repo("git branch | grep \\*").sub("*", "").strip
+    bash_repo('git branch | grep \\*').sub("*", "").strip
   end
 end

@@ -12,55 +12,58 @@ class BashTest < Minitest::Test
   end
 
   def test_run_command_in_param
-    bash("touch tmp/create_file_test.txt", silent: true)
+    bash('touch tmp/create_file_test.txt', silent: true)
     assert `ls tmp`.include? "create_file_test.txt"
   end
 
   def test_run_command_in_block
-    bash(silent: true) {"touch tmp/create_file_test.txt"}
+    bash(silent: true) {'touch tmp/create_file_test.txt'}
     assert `ls tmp`.include? "create_file_test.txt"
   end
 
   def test_from
-    bash("touch create_file_test.txt", from: "tmp", silent: true)
+    bash('touch create_file_test.txt', from: "tmp", silent: true)
     assert `ls tmp`.include? "create_file_test.txt"
   end
 
   def test_output
-    assert bash("ls", silent: true).include?('test')
+    assert bash('ls', silent: true).include?('test')
   end
 
   def test_capture_errors
-    assert bash("rm unknown.file", silent: true).include?('No such file or directory')
+    assert bash('rm unknown.file', silent: true).include?('No such file or directory')
   end
 
   def test_stop_run_rest_on_error
     bash(silent: true) do
-      "
+      '
       rm unknown.file
       touch tmp/never-create.txt
-      "
+      '
     end
-    assert !bash("ls tmp", silent: true).include?('never-create.txt')
+    assert !bash('ls tmp', silent: true).include?('never-create.txt')
   end
 
   def test_call_method
-    bash(":touch_file_a", silent: true)
+    bash(':touch_file_a', silent: true)
     assert `ls tmp`.include?("file_a")
   end
 
   def test_call_method_failed
     bash(silent: true, from: "tmp") do
-      "
+      '
       :return_false
       touch file_b
-      "
+      '
     end
     assert !`ls tmp`.include?("file_b")
   end
 
   def test_return_minimise_empty_lines
-    assert_equal "a", bash("echo '' \n echo 'a'", silent: true)
+    assert_equal "a", bash('
+      echo ""
+      echo "a"
+    ', silent: true)
   end
 
   def test_inline_method
@@ -69,7 +72,7 @@ class BashTest < Minitest::Test
 
   private
   def touch_file_a
-    bash("touch file_a", from: "tmp", silent: true)
+    bash('touch file_a', from: "tmp", silent: true)
   end
 
   def return_false

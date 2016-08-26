@@ -12,7 +12,7 @@ class PushToStagingTest < Minitest::Test
   def test_merge_to_staging
     subject.run
     checkout(:staging)
-    assert bash_repo("ls").include? "test.txt"
+    assert bash_repo('ls').include? "test.txt"
   end
 
   def test_push_to_staging
@@ -49,11 +49,11 @@ class PushToStagingTest < Minitest::Test
   end
 
   def work_on_feature_branch
-    bash_repo("git checkout -b feature")
+    bash_repo('git checkout -b feature')
     commit_branch(:feature, "test.txt")
   end
 
   def current_branch
-    bash_repo("git branch | grep \\*").sub("*", "").strip
+    bash_repo('git branch | grep \\*').sub("*", "").strip
   end
 end
