@@ -1,8 +1,10 @@
 require 'ora/cli/print'
+require 'ora/cli/bash'
 
 module Ora::Cli
   class Task
     include Print
+    include Bash
 
     attr_reader :branch, :inputs
 

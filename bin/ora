@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+selecta      = File.expand_path('../ora_selecta', __FILE__)
+path         = File.expand_path('../../lib/ora/cli/tasks', __FILE__)
+remove_ext   = "sed 's/\.[^.]*$//'"
+project_path = `pwd`.strip
+
+task = `ls #{path} | #{remove_ext} | #{selecta}`.strip
+
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require 'ora/cli'
+
+include Ora::Cli
+class_name = task.split('_').map(&:capitalize).join
+Object.const_get(class_name).new(project_path).run
