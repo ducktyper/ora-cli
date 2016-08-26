@@ -24,7 +24,7 @@ module Ora::Cli
               method(Regexp.last_match[1]).call
             end
             output = `#{move}#{raw_command}#{capture_err}`
-            puts output unless silent
+            puts_plain output unless silent
             unless (success = $?.success?)
               unless silent
                 puts_red "Process Failed! Please resolve the issue above and run commands below manually\n"
