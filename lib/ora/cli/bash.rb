@@ -11,17 +11,18 @@ module Ora::Cli
     end
 
     def run commands
-      can_continue = true
-      extract_commands(commands).map do |unprocessed_command|
-        command = complete_command(unprocessed_command)
-        can_continue ? @print.green(command) : @print.red(command)
+      unprocessed_commands = extract commands
 
-        next unless can_continue
+      outputs = []
+      while (command = complete unprocessed_commands.shift)
+        break unless call command do |output|
+          outputs.push output
+        end
+      end
 
-        output, can_continue = run_command(command)
-        show_failed_message(command) unless can_continue
-        output
-      end.compact.map(&:strip).reject(&:empty?).join("\n")
+      handle_failed unprocessed_commands
+
+      join outputs
     end
 
     private
@@ -32,51 +33,64 @@ module Ora::Cli
       " 2>&1"
     end
 
-    def extract_commands text
-      text.split("\n").map(&:strip).reject(&:empty?)
+    def extract commands
+      commands.split("\n").map(&:strip).reject(&:empty?)
     end
-    def join_outputs outputs
+    def join outputs
       outputs.compact.map(&:strip).reject(&:empty?).join("\n")
     end
 
-    def target_call method_name
+    def call_target method_name
       @target.method(method_name).call
     end
 
-    def complete_command unprocessed_command
+    def complete unprocessed_command
+      return nil unless unprocessed_command
+
       unprocessed_command.gsub(/#\{([\S]+)\}/) do
-        target_call Regexp.last_match[1]
+        call_target Regexp.last_match[1]
       end
     end
 
-    def run_command command
-      if run_method? command
-        [nil, run_method(command)]
-      else
-        [run_shell(command), $?.success?]
-      end
+    def call command
+      @print.green command
+
+      success =
+        if method? command
+          call_method command
+        else
+          yield(shell command)
+          $?.success?
+        end
+
+      alert command unless success
+      success
     end
-    def run_method? command
+    def method? command
       command.start_with? ":"
     end
-    def run_method_name command
+    def method_name command
       command.sub(':', '')
     end
-    def run_method command
-       run_method_success? target_call(run_method_name(command))
+    def call_method command
+       success_call? call_target(method_name command)
     end
-    def run_method_success? method_return
+    def success_call? method_return
       method_return != false
     end
-    def run_shell command
-      output = `#{move}#{command}#{capture_err}`
-      @print.plain output
-      output
+    def shell command
+      @print.plain `#{move}#{command}#{capture_err}`
     end
 
-    def show_failed_message command
+    def alert command
       @print.red "Process Failed! Please resolve the issue above and run commands below manually\n"
       @print.red command
+    end
+
+    def handle_failed unprocessed_commands
+      unprocessed_commands.each do |unprocessed_command|
+        @print.red(complete unprocessed_command)
+      end
     end
   end
 end
