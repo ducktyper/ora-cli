@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CreateNewFeatureBranchTest < Minitest::Test
+class NewFeatureBranchTest < Minitest::Test
   def setup
     reset_tmp
   end
@@ -39,6 +39,6 @@ class CreateNewFeatureBranchTest < Minitest::Test
 
   private
   def subject(inputs = ["new_feature"])
-    CreateNewFeatureBranch.new(REPOSITORY, inputs: inputs, print: Print.new(true))
+    NewFeatureBranch.new(REPOSITORY, inputs: inputs, print: Print.new(true))
   end
 end
