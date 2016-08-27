@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "ORA CLI"
   spec.description   = "ORA CLI"
-  spec.homepage      = "orahq.com"
+  spec.homepage      = "https://orahq.com"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
