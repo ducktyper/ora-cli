@@ -83,7 +83,7 @@ module Ora::Cli
     end
 
     def alert command
-      @print.red "Process Failed! Please resolve the issue above and run commands below manually\n"
+      @print.red "\nProcess Failed! Please resolve the issue above and run commands below manually\n"
       @print.red command
     end
 
