@@ -3,6 +3,7 @@ module Ora::Cli
 
     def commands
       '
+      :feature_branch!
       :clean_branch!
       git checkout develop
       git pull origin develop

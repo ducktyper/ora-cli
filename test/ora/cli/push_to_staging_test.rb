@@ -28,14 +28,22 @@ class PushToStagingTest < Minitest::Test
 
   def test_pull_origin_staging
     commit_remote_branch(:staging, "remote_file.txt")
+    checkout :feature
     subject.run
+    checkout :staging
     assert bash_repo('ls').include? "remote_file.txt"
   end
 
   def test_merge_latest_develop
     commit_remote_branch(:develop, "remote_file.txt")
+    checkout :feature
     subject.run
     assert bash_repo('ls').include? "remote_file.txt"
+  end
+
+  def test_stop_on_none_feature_branch
+    bash_repo('git checkout develop')
+    assert subject.run.empty?
   end
 
   def test_stop_on_dirty_branch

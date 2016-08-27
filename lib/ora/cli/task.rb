@@ -23,6 +23,13 @@ module Ora::Cli
       @bash.silent('git branch | grep \\*').sub("*", "").strip
     end
 
+    def feature_branch!
+      if %w{master develop staging uat}.include?(branch)
+        @print.red "Please checkout feature branch first!"
+        false
+      end
+    end
+
     def clean_branch!
       if dirty?
         print.red "Please clean the feature branch '#{branch}'!"
