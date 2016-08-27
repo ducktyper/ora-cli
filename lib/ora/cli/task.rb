@@ -8,14 +8,14 @@ module Ora::Cli
 
     def initialize(from, inputs: [], print: Print.new)
       @from   = from
-      @bash   = Bash.new(self, from: @from)
+      @bash   = Bash.new(self, from: @from, print: print)
       @branch = current_branch
       @inputs = inputs
       @print  = print
     end
 
     def run
-      @bash.bash(commands, print: print)
+      @bash.run commands
     end
 
     def commands
@@ -24,7 +24,7 @@ module Ora::Cli
 
     private
     def current_branch
-      @bash.bash('git branch | grep \\*', print: Print.new(true)).sub("*", "").strip
+      @bash.silent('git branch | grep \\*').sub("*", "").strip
     end
 
     def clean_branch!
@@ -34,7 +34,7 @@ module Ora::Cli
       end
     end
     def dirty?
-      !@bash.bash('git status', print: Print.new(true)).include? 'nothing to commit'
+      !@bash.silent('git status').include? 'nothing to commit'
     end
   end
 end

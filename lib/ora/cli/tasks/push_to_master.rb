@@ -35,7 +35,7 @@ module Ora::Cli
     end
     def latest_versions
       @latest_versions ||=
-        @bash.bash('git tag', print: Print.new(true)).split("\n").
+        @bash.silent('git tag').split("\n").
           select {|tag| tag.match(/^v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/)}.
           map    {|tag| Gem::Version.create(tag.sub(/^v/, ''))}.sort.last(5).
           map    {|ver| "v#{ver}"}

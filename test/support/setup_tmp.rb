@@ -1,18 +1,13 @@
 module SetupTmp
   def reset_tmp
-    Bash.new(self).bash(print: Print.new(true)) do
-      '
+    Bash.new(self, print: Print.new(true)).run '
       rm -rf tmp
       mkdir tmp tmp/remote tmp/repository
-      '
-    end
-    Bash.new(self, from: 'tmp/remote').bash(print: Print.new(true)) do
-      '
+    '
+    Bash.new(self, from: 'tmp/remote', print: Print.new(true)).run '
       git init --bare
-      '
-    end
-    Bash.new(self, from: 'tmp/repository').bash(print: Print.new(true)) do
-      '
+    '
+    Bash.new(self, from: 'tmp/repository', print: Print.new(true)).run '
       git init
       git remote add origin ../remote
       touch a.txt
@@ -26,11 +21,10 @@ module SetupTmp
       git checkout -b uat
       git push origin uat
       git checkout develop
-      '
-    end
+    '
   end
 
   def delete_tmp
-    Bash.new(self).bash(print: Print.new(true)) {"rm -rf ../tmp"}
+    `rm -rf ../tmp`
   end
 end

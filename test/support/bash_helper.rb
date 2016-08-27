@@ -1,5 +1,5 @@
 module BashHelper
-  def bash_repo(command)
-    Bash.new(self, from: REPOSITORY).bash(command, print: Print.new(true))
+  def bash_repo(commands)
+    Bash.new(self, from: REPOSITORY, print: Print.new(true)).run commands
   end
 end
