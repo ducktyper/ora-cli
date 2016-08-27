@@ -9,8 +9,9 @@ A command line tool to automate development workflow in ORA
 ## Usage
 
     $ ora
-    
-Fuzzy search ([selecta](https://github.com/garybernhardt/selecta)) the task and run.
+
+1. Run `ora` command at the project folder
+2. Fuzzy search (using [selecta](https://github.com/garybernhardt/selecta)) the task you want to run and type enter.
 
 ## Tasks
 
