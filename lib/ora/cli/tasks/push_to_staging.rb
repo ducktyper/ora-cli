@@ -21,8 +21,8 @@ module Ora::Cli
 
     private
     def show_slack_message
-      print.puts_green "Paste below to slack"
-      print.puts_plain ":merge: #{branch} => staging\n:monorail: staging"
+      print.green "Paste below to slack"
+      print.plain ":merge: #{branch} => staging\n:monorail: staging"
     end
   end
 end

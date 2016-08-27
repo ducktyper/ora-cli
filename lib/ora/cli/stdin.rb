@@ -14,7 +14,7 @@ module Ora::Cli
         if input.match(pattern)
           success = true
         else
-          @print.puts_red "Please match #{pattern.inspect}"
+          @print.red "Please match #{pattern.inspect}"
         end
       end
 

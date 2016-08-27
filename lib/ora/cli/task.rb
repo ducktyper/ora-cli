@@ -29,7 +29,7 @@ module Ora::Cli
 
     def clean_branch!
       if dirty?
-        print.puts_red "Please clean the feature branch '#{branch}'!"
+        print.red "Please clean the feature branch '#{branch}'!"
         return false
       end
     end

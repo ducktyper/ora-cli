@@ -26,10 +26,10 @@ module Ora::Cli
 
     private
     def set_version
-      print.puts_plain "Latest versions:"
-      print.puts_plain latest_versions
-      print.puts_plain "Enter to use #{recommend_version} or type new version:"
-      print.print_plain "New Version: "
+      print.plain "Latest versions:"
+      print.plain latest_versions
+      print.plain "Enter to use #{recommend_version} or type new version:"
+      print.inline "New Version: "
       @version = Stdin.new(inputs).gets(/^(v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)?$/)
       @version = recommend_version if @version.empty?
     end
@@ -46,8 +46,8 @@ module Ora::Cli
     end
 
     def show_slack_message
-      print.puts_green "Paste below to slack"
-      print.puts_plain ":merge: #{branch} => develop\n:merge: develop => master\n:monorail: production"
+      print.green "Paste below to slack"
+      print.plain ":merge: #{branch} => develop\n:merge: develop => master\n:monorail: production"
     end
   end
 end
