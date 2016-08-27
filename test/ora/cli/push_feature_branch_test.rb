@@ -32,7 +32,7 @@ class PushFeatureBranchTest < Minitest::Test
 
   private
   def subject
-    PushFeatureBranch.new(REPOSITORY, silent: true)
+    PushFeatureBranch.new(REPOSITORY, print: Print.new(true))
   end
 
   def work_on_feature_branch

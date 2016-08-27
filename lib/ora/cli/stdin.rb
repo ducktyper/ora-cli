@@ -1,11 +1,8 @@
-require 'ora/cli/print'
-
 module Ora::Cli
-  include Print
-
   class Stdin
-    def initialize(inputs = [])
+    def initialize(inputs = [], print: Print.new)
       @inputs = inputs
+      @print  = print
     end
 
     def gets(pattern = '')
@@ -17,7 +14,7 @@ module Ora::Cli
         if input.match(pattern)
           success = true
         else
-          puts_red "Please match #{pattern.inspect}"
+          @print.puts_red "Please match #{pattern.inspect}"
         end
       end
 

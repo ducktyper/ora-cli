@@ -45,7 +45,7 @@ class PushToStagingTest < Minitest::Test
 
   private
   def subject
-    PushToStaging.new(REPOSITORY, silent: true)
+    PushToStaging.new(REPOSITORY, print: Print.new(true))
   end
 
   def work_on_feature_branch

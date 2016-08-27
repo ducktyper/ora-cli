@@ -4,20 +4,19 @@ require 'ora/cli/stdin'
 
 module Ora::Cli
   class Task
-    include Print
     include Bash
 
-    attr_reader :branch, :inputs
+    attr_reader :branch, :inputs, :print
 
-    def initialize(from, silent: false, inputs: [])
+    def initialize(from, inputs: [], print: Print.new)
       @from   = from
-      @silent = silent
       @branch = current_branch
       @inputs = inputs
+      @print  = print
     end
 
     def run
-      bash(commands, from: @from, silent: @silent)
+      bash(commands, from: @from, print: print)
     end
 
     def commands
@@ -26,17 +25,17 @@ module Ora::Cli
 
     private
     def current_branch
-      bash('git branch | grep \\*', from: @from, silent: true).sub("*", "").strip
+      bash('git branch | grep \\*', from: @from, print: Print.new(true)).sub("*", "").strip
     end
 
     def clean_branch!
       if dirty?
-        puts_red "Please clean the feature branch '#{branch}'!"
+        print.puts_red "Please clean the feature branch '#{branch}'!"
         return false
       end
     end
     def dirty?
-      !bash('git status', from: @from, silent: true).include? 'nothing to commit'
+      !bash('git status', from: @from, print: Print.new(true)).include? 'nothing to commit'
     end
   end
 end

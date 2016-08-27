@@ -61,7 +61,7 @@ class PushToMasterTest < Minitest::Test
 
   private
   def subject(inputs = [''])
-    PushToMaster.new(REPOSITORY, silent: true, inputs: inputs)
+    PushToMaster.new(REPOSITORY, inputs: inputs, print: Print.new(true))
   end
 
   def work_on_feature_branch

@@ -1,5 +1,8 @@
 module Ora::Cli
-  module Print
+  class Print
+    def initialize(silent = false)
+      @silent = silent
+    end
     def puts_plain text
       puts text unless @silent
     end

@@ -39,6 +39,6 @@ class CreateNewFeatureBranchTest < Minitest::Test
 
   private
   def subject(inputs = ["new_feature"])
-    CreateNewFeatureBranch.new(REPOSITORY, silent: true, inputs: inputs)
+    CreateNewFeatureBranch.new(REPOSITORY, inputs: inputs, print: Print.new(true))
   end
 end

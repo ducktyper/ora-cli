@@ -1,10 +1,7 @@
-require 'ora/cli/print'
-
 module Ora::Cli
   module Bash
-    include Print
 
-    def bash(commands = nil, from: nil, silent: false)
+    def bash(commands = nil, from: nil, print: Print.new)
       success = true
       (block_given? ? yield : commands).split("\n").map(&:strip).reject(&:empty?).map do |unprocessed_command|
         output = ''
@@ -13,28 +10,24 @@ module Ora::Cli
         end
 
         if success
-          puts_green command unless silent
+          print.puts_green command
           if command.start_with? ":"
             unless (success = (method(command.sub(':', '')).call != false))
-              unless silent
-                puts_red "Process Failed! Please resolve the issue above and run commands below manually\n"
-                puts_red command
-              end
+              print.puts_red "Process Failed! Please resolve the issue above and run commands below manually\n"
+              print.puts_red command
             end
           else
             move        = "cd #{from} && " if from
             capture_err = " 2>&1"
             output = `#{move}#{command}#{capture_err}`
-            puts_plain output unless silent
+            print.puts_plain output
             unless (success = $?.success?)
-              unless silent
-                puts_red "Process Failed! Please resolve the issue above and run commands below manually\n"
-                puts_red command
-              end
+              print.puts_red "Process Failed! Please resolve the issue above and run commands below manually\n"
+              print.puts_red command
             end
           end
         else
-          puts_red command unless silent
+          print.puts_red command
         end
         output
       end.map(&:strip).reject(&:empty?).join("\n")
