@@ -1,5 +1,3 @@
-require 'ora/cli/task'
-
 module Ora::Cli
   class PushFeatureBranch < Task
     def commands

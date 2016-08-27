@@ -1,5 +1,3 @@
-require 'ora/cli/task'
-
 module Ora::Cli
   class CreateNewFeatureBranch < Task
     attr_reader :branch_name
