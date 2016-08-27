@@ -1,12 +1,12 @@
 module Ora::Cli
   class Task
-    attr_reader :branch, :inputs, :print
+    attr_reader :branch, :stdin, :print
 
     def initialize(from, inputs: [], print: Print.new)
       @from   = from
       @bash   = Bash.new(self, from: @from, print: print)
       @branch = current_branch
-      @inputs = inputs
+      @stdin  = Stdin.new(inputs, print: print)
       @print  = print
     end
 

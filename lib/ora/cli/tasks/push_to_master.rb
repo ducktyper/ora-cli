@@ -28,7 +28,7 @@ module Ora::Cli
       print.plain latest_versions
       print.plain "Enter to use #{recommend_version} or type new version:"
       print.inline "New Version: "
-      @version = Stdin.new(inputs).gets(/^(v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)?$/)
+      @version = stdin.gets(/^(v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)?$/)
       @version = recommend_version if @version.empty?
     end
     def latest_versions
