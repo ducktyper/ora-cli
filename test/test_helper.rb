@@ -4,7 +4,6 @@ require 'ora/cli'
 require 'minitest/autorun'
 
 include Ora::Cli
-include Bash
 
 REPOSITORY = "tmp/repository"
 

@@ -1,18 +1,17 @@
 module Ora::Cli
-  module Bash
-
-    def bash(commands = nil, from: nil, print: Print.new)
+  class Bash
+    def bash(target, commands = nil, from: nil, print: Print.new)
       success = true
       (block_given? ? yield : commands).split("\n").map(&:strip).reject(&:empty?).map do |unprocessed_command|
         output = ''
         command = unprocessed_command.gsub(/#\{([\S]+)\}/) do
-          method(Regexp.last_match[1]).call
+          target.method(Regexp.last_match[1]).call
         end
 
         if success
           print.puts_green command
           if command.start_with? ":"
-            unless (success = (method(command.sub(':', '')).call != false))
+            unless (success = (target.method(command.sub(':', '')).call != false))
               print.puts_red "Process Failed! Please resolve the issue above and run commands below manually\n"
               print.puts_red command
             end

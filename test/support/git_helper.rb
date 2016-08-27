@@ -1,5 +1,4 @@
 module GitHelper
-  include Bash
   include BashHelper
 
   def commit_branch(branch_name, file_name)

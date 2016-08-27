@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class BashTest < Minitest::Test
-  include Bash
-
   def setup
     `rm -rf tmp && mkdir tmp`
   end
@@ -12,45 +10,45 @@ class BashTest < Minitest::Test
   end
 
   def test_run_command_in_param
-    bash('touch tmp/create_file_test.txt', print: Print.new(true))
+    bash.bash(self, 'touch tmp/create_file_test.txt', print: Print.new(true))
     assert `ls tmp`.include? "create_file_test.txt"
   end
 
   def test_run_command_in_block
-    bash(print: Print.new(true)) {'touch tmp/create_file_test.txt'}
+    bash.bash(self, print: Print.new(true)) {'touch tmp/create_file_test.txt'}
     assert `ls tmp`.include? "create_file_test.txt"
   end
 
   def test_from
-    bash('touch create_file_test.txt', from: "tmp", print: Print.new(true))
+    bash.bash(self, 'touch create_file_test.txt', from: "tmp", print: Print.new(true))
     assert `ls tmp`.include? "create_file_test.txt"
   end
 
   def test_output
-    assert bash('ls', print: Print.new(true)).include?('test')
+    assert bash.bash(self, 'ls', print: Print.new(true)).include?('test')
   end
 
   def test_capture_errors
-    assert bash('rm unknown.file', print: Print.new(true)).include?('No such file or directory')
+    assert bash.bash(self, 'rm unknown.file', print: Print.new(true)).include?('No such file or directory')
   end
 
   def test_stop_run_rest_on_error
-    bash(print: Print.new(true)) do
+    bash.bash(self, print: Print.new(true)) do
       '
       rm unknown.file
       touch tmp/never-create.txt
       '
     end
-    assert !bash('ls tmp', print: Print.new(true)).include?('never-create.txt')
+    assert !bash.bash(self, 'ls tmp', print: Print.new(true)).include?('never-create.txt')
   end
 
   def test_call_method
-    bash(':touch_file_a', print: Print.new(true))
+    bash.bash(self, ':touch_file_a', print: Print.new(true))
     assert `ls tmp`.include?("file_a")
   end
 
   def test_call_method_failed
-    bash(print: Print.new(true), from: "tmp") do
+    bash.bash(self, print: Print.new(true), from: "tmp") do
       '
       :return_false
       touch file_b
@@ -60,19 +58,23 @@ class BashTest < Minitest::Test
   end
 
   def test_return_minimise_empty_lines
-    assert_equal "a", bash('
+    assert_equal "a", bash.bash(self, '
       echo ""
       echo "a"
     ', print: Print.new(true))
   end
 
   def test_inline_method
-    assert bash('#{inline_method}', print: Print.new(true)).include?("test")
+    assert bash.bash(self, '#{inline_method}', print: Print.new(true)).include?("test")
   end
 
   private
+  def bash
+    Bash.new
+  end
+
   def touch_file_a
-    bash('touch file_a', from: "tmp", print: Print.new(true))
+    bash.bash(self, 'touch file_a', from: "tmp", print: Print.new(true))
   end
 
   def return_false
