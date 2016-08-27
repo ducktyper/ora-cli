@@ -6,15 +6,13 @@ module Ora::Cli
     end
 
     def gets(pattern = '')
-      input   = nil
-      success = false
+      input = nil
 
-      until success
-        input = @inputs.pop || STDIN.gets.chomp.strip
-        if input.match(pattern)
-          success = true
-        else
+      until input
+        input = @inputs.shift || STDIN.gets.chomp.strip
+        unless input.match(pattern)
           @print.red "Please match #{pattern.inspect}"
+          input = nil
         end
       end
 
