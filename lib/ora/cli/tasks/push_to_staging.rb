@@ -13,13 +13,12 @@ module Ora::Cli
       git merge #{branch}
       git push origin staging
       git checkout #{branch}
-      :show_slack_message
+      :slack_message_to_paste
       '
     end
 
     private
-    def show_slack_message
-      print.green "Paste below to slack"
+    def slack_message_to_paste
       print.plain ":merge: #{branch} => staging\n:monorail: staging"
     end
   end
