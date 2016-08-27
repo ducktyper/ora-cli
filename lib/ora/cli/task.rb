@@ -1,5 +1,6 @@
 require 'ora/cli/print'
 require 'ora/cli/bash'
+require 'ora/cli/stdin'
 
 module Ora::Cli
   class Task
