@@ -6,8 +6,12 @@ module Ora::Cli
 
     def bash(commands = nil, from: nil, silent: false)
       success = true
-      (block_given? ? yield : commands).split("\n").map(&:strip).reject(&:empty?).map do |command|
+      (block_given? ? yield : commands).split("\n").map(&:strip).reject(&:empty?).map do |unprocessed_command|
         output = ''
+        command = unprocessed_command.gsub(/#\{([\S]+)\}/) do
+          method(Regexp.last_match[1]).call
+        end
+
         if success
           puts_green command unless silent
           if command.start_with? ":"
@@ -20,10 +24,7 @@ module Ora::Cli
           else
             move        = "cd #{from} && " if from
             capture_err = " 2>&1"
-            raw_command = command.gsub(/#\{([\S]+)\}/) do
-              method(Regexp.last_match[1]).call
-            end
-            output = `#{move}#{raw_command}#{capture_err}`
+            output = `#{move}#{command}#{capture_err}`
             puts_plain output unless silent
             unless (success = $?.success?)
               unless silent
