@@ -17,7 +17,7 @@ module Ora::Cli
     private
     def set_branch_name
       print_plain 'Type new branch name: '
-      @branch_name = Stdin.new(inputs).gets /^[a-zA-Z0-9\/_-]+$/
+      @branch_name = Stdin.new(inputs).gets(/^[a-zA-Z0-9\/_-]+$/)
     end
   end
 end

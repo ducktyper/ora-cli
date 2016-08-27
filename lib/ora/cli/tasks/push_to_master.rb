@@ -30,13 +30,13 @@ module Ora::Cli
       puts_plain latest_versions
       puts_plain "Enter to use #{recommend_version} or type new version:"
       print_plain "New Version: "
-      @version = Stdin.new(inputs).gets /^(v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)?$/
+      @version = Stdin.new(inputs).gets(/^(v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)?$/)
       @version = recommend_version if @version.empty?
     end
     def latest_versions
       @latest_versions ||=
         bash('git tag', from: @from, silent: true).split("\n").
-          select {|tag| tag.match /^v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/}.
+          select {|tag| tag.match(/^v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/)}.
           map    {|tag| Gem::Version.create(tag.sub(/^v/, ''))}.sort.last(5).
           map    {|ver| "v#{ver}"}
     end
