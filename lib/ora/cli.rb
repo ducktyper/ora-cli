@@ -7,4 +7,13 @@ module Ora
   end
 end
 
-Dir[File.dirname(__FILE__) + '/cli/**/*.rb'].each {|file| require file }
+require "ora/cli/bash.rb"
+require "ora/cli/print.rb"
+require "ora/cli/stdin.rb"
+require "ora/cli/task.rb"
+require "ora/cli/version.rb"
+require "ora/cli/tasks/new_feature_branch.rb"
+require "ora/cli/tasks/push_feature_branch.rb"
+require "ora/cli/tasks/push_to_master.rb"
+require "ora/cli/tasks/push_to_staging.rb"
+require "ora/cli/tasks/push_to_uat.rb"

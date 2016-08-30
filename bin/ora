@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'ora/cli'
-
 selecta      = File.expand_path('../ora_selecta', __FILE__)
 path         = File.expand_path('../../lib/ora/cli/tasks', __FILE__)
 remove_ext   = "sed 's/\.[^.]*$//'"
