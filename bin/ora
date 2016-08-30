@@ -7,4 +7,5 @@ project_path = `pwd`.strip
 
 task = `ls #{path} | #{remove_ext} | #{selecta}`.strip
 
+require 'ora/cli'
 Ora::Cli.run task, project_path
