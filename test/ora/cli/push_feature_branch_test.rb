@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ora/cli/tasks/push_feature_branch'
 
 class PushFeatureBranchTest < Minitest::Test
   def setup

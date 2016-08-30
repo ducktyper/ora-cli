@@ -1,3 +1,5 @@
+require 'ora/cli/task'
+
 module Ora::Cli
   class PushToMaster < Task
     attr_reader :version

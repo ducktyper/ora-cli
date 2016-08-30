@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ora/cli/tasks/push_to_staging'
 
 class PushToStagingTest < Minitest::Test
   def setup

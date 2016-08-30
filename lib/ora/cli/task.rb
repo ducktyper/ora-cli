@@ -1,3 +1,7 @@
+require "ora/cli/bash.rb"
+require "ora/cli/print.rb"
+require "ora/cli/stdin.rb"
+
 module Ora::Cli
   class Task
     attr_reader :branch, :stdin, :print

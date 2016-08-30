@@ -1,3 +1,5 @@
+require "ora/cli/print.rb"
+
 module Ora::Cli
   class Bash
     def initialize(target, from: nil, print: Print.new)

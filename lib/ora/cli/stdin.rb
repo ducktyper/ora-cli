@@ -1,3 +1,5 @@
+require "ora/cli/print.rb"
+
 module Ora::Cli
   class Stdin
     def initialize(inputs = [], print: Print.new)

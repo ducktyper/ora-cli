@@ -1,3 +1,5 @@
+require "ora/cli/bash.rb"
+
 module SetupTmp
   def reset_tmp
     Bash.new(self, print: Print.new(true)).run '

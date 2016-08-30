@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ora/cli/tasks/push_to_uat'
 
 class PushToUatTest < Minitest::Test
   def setup

@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ora/cli/tasks/push_to_master'
 
 class PushToMasterTest < Minitest::Test
   def setup
