@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ora/cli/stdin'
 
 class StdinTest < Minitest::Test
   def test_gets

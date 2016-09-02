@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ora/cli/bash'
 
 class BashTest < Minitest::Test
   def setup
