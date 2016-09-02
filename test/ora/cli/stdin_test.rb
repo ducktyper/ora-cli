@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class BashTest < Minitest::Test
+class StdinTest < Minitest::Test
   def test_gets
     stdin = subject ['input1', 'input2']
     assert_equal 'input1', stdin.gets
