@@ -17,6 +17,7 @@ module Ora::Cli
 
       outputs = []
       while (command = complete unprocessed_commands.shift)
+        next if command.empty?
         break unless call command do |output|
           outputs.push output
         end
