@@ -6,10 +6,10 @@ require 'ora/cli/print'
 ora_path = File.expand_path('../ora', __FILE__)
 
 bash = Ora::Cli::Bash.new(nil)
-bash.run '
+bash.run "
   rm -f /usr/local/bin/ora
   ln -s #{ora_path} /usr/local/bin/ora
-'
+"
 
 print = Ora::Cli::Print.new
 print.green "\nInstall finished"
