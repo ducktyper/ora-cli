@@ -10,7 +10,7 @@ module Ora::Cli
       @from   = from
       @bash   = Bash.new(self, from: @from, print: print)
       @branch = current_branch
-      @stdin  = Stdin.new(inputs, print: print)
+      @stdin  = Stdin.new(bash: @bash, print: print, inputs: inputs)
       @print  = print
     end
 

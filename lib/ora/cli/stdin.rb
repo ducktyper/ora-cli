@@ -2,9 +2,10 @@ require "ora/cli/print.rb"
 
 module Ora::Cli
   class Stdin
-    def initialize(inputs = [], print: Print.new)
-      @inputs = inputs
+    def initialize(bash:, print: Print.new, inputs: [])
+      @bash   = bash
       @print  = print
+      @inputs = inputs
     end
 
     def gets(pattern = '')

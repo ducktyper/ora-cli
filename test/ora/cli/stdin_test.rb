@@ -15,6 +15,8 @@ class StdinTest < Minitest::Test
 
   private
   def subject(inputs = [])
-    Stdin.new(inputs, print: Print.new(true))
+    print = Print.new(true)
+    bash  = Bash.new(self, from: 'tmp', print: print)
+    Stdin.new(bash: bash, print: print, inputs: inputs)
   end
 end
