@@ -1,6 +1,6 @@
-require "ora/cli/version.rb"
-require "ora/cli/bash.rb"
-require "ora/cli/path.rb"
+require "ora/cli/version"
+require "ora/cli/bash"
+require "ora/cli/path"
 
 module Ora
   module Cli

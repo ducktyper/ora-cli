@@ -1,4 +1,4 @@
-require "ora/cli/bash.rb"
+require "ora/cli/bash"
 
 module SetupTmp
   def reset_tmp

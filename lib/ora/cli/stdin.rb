@@ -1,4 +1,4 @@
-require "ora/cli/print.rb"
+require "ora/cli/print"
 
 module Ora::Cli
   class Stdin

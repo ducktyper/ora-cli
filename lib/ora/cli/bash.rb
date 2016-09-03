@@ -1,5 +1,5 @@
-require "ora/cli/print.rb"
-require "ora/cli/path.rb"
+require "ora/cli/print"
+require "ora/cli/path"
 
 module Ora::Cli
   class Bash
