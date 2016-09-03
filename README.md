@@ -5,6 +5,12 @@ A command line tool to automate development workflow in ORA
 ## Installation
 
     $ gem install ora-cli
+    $ ora-install
+
+## Uninstallation
+
+    $ ora-uninstall
+    $ gem uninstall ora-cli
 
 ## Usage
 
