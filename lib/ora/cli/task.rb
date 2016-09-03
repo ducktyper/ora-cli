@@ -6,6 +6,8 @@ module Ora::Cli
   class Task
     attr_reader :branch, :stdin, :print
 
+    MAIN_BRANCHES = %w{master develop staging uat}
+
     def initialize(from, inputs: [], print: Print.new)
       @from   = from
       @bash   = Bash.new(self, from: @from, print: print)
@@ -31,8 +33,12 @@ module Ora::Cli
       @bash.silent('git branch | grep \\*').sub("*", "").strip
     end
 
+    def main_branch?
+      MAIN_BRANCHES.include? branch
+    end
+
     def feature_branch!
-      if %w{master develop staging uat}.include?(branch)
+      if main_branch?
         @print.red "Please checkout feature branch first!"
         false
       end
