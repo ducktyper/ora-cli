@@ -2,7 +2,7 @@ require 'test_helper'
 require 'ora/cli/stdin'
 
 class StdinTest < Minitest::Test
-  def test_gets
+  def test_fake_gets
     stdin = subject ['input1', 'input2']
     assert_equal 'input1', stdin.gets
     assert_equal 'input2', stdin.gets
@@ -11,6 +11,12 @@ class StdinTest < Minitest::Test
   def test_pattern_retry
     stdin = subject ['none_number', '12345']
     assert_equal '12345', stdin.gets(/^\d+$/)
+  end
+
+  def test_fake_select
+    stdin = subject ['input1', 'input2']
+    assert_equal 'input1', stdin.select("command")
+    assert_equal 'input2', stdin.select("command")
   end
 
   private

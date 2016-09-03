@@ -27,6 +27,10 @@ module Ora::Cli
       join outputs
     end
 
+    def select command
+      `#{move}#{command} | #{selecta}`
+    end
+
     private
     def move
       "cd #{@from} && " if @from
@@ -93,6 +97,10 @@ module Ora::Cli
       unprocessed_commands.each do |unprocessed_command|
         @print.red(complete unprocessed_command)
       end
+    end
+
+    def selecta
+      @selecta ||= File.expand_path('../../../../bin/ora_selecta', __FILE__)
     end
   end
 end

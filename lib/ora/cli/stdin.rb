@@ -21,5 +21,9 @@ module Ora::Cli
 
       input
     end
+
+    def select(command)
+      @inputs.shift || @bash.select(command)
+    end
   end
 end
