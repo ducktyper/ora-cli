@@ -7,7 +7,7 @@ gem_path = File.expand_path('../..', __FILE__)
 
 bash = Ora::Cli::Bash.new(nil, from: gem_path)
 bash.run '
-  rm /usr/local/bin/ora
+  rm -f /usr/local/bin/ora
   ln -s bin/ora /usr/local/bin/ora
 '
 
