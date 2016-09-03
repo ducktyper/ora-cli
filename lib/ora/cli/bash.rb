@@ -1,4 +1,5 @@
 require "ora/cli/print.rb"
+require "ora/cli/path.rb"
 
 module Ora::Cli
   class Bash
@@ -31,7 +32,7 @@ module Ora::Cli
     end
 
     def select command
-      `#{move}#{command} | #{selecta}`.strip
+      `#{move}#{command} | #{Path.selecta}`.strip
     end
 
     def success?
@@ -106,8 +107,5 @@ module Ora::Cli
       end
     end
 
-    def selecta
-      @selecta ||= File.expand_path('../../../../bin/ora_selecta', __FILE__)
-    end
   end
 end
