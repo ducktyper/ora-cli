@@ -22,6 +22,10 @@ module Ora::Cli
       raise "Override this method in subclass"
     end
 
+    def success?
+      @bash.success?
+    end
+
     private
     def current_branch
       @bash.silent('git branch | grep \\*').sub("*", "").strip

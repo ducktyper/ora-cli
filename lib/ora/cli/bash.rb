@@ -3,9 +3,10 @@ require "ora/cli/print.rb"
 module Ora::Cli
   class Bash
     def initialize(target, from: nil, print: Print.new)
-      @target = target
-      @from   = from
-      @print  = print
+      @target  = target
+      @from    = from
+      @print   = print
+      @success = true
     end
 
     def silent command
@@ -13,6 +14,7 @@ module Ora::Cli
     end
 
     def run commands
+      @success = true
       unprocessed_commands = extract commands
 
       outputs = []
@@ -30,6 +32,10 @@ module Ora::Cli
 
     def select command
       `#{move}#{command} | #{selecta}`
+    end
+
+    def success?
+      @success
     end
 
     private
@@ -62,7 +68,7 @@ module Ora::Cli
     def call command
       @print.green command
 
-      success =
+      @success =
         if method? command
           call_method command
         else
@@ -70,8 +76,8 @@ module Ora::Cli
           $?.success?
         end
 
-      alert command unless success
-      success
+      alert command unless @success
+      @success
     end
     def method? command
       command.start_with? ":"

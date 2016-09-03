@@ -27,6 +27,13 @@ class BashTest < Minitest::Test
     assert bash.run('rm unknown.file').include?('No such file or directory')
   end
 
+  def test_success
+    bash.run('ls')
+    assert_equal true, bash.success?
+    bash.run('rm unknown.file')
+    assert_equal false, bash.success?
+  end
+
   def test_stop_run_rest_on_error
     bash.run '
       rm unknown.file
@@ -61,7 +68,7 @@ class BashTest < Minitest::Test
 
   private
   def bash
-    Bash.new(self, from: "tmp", print: Print.new(true))
+    @bash ||= Bash.new(self, from: "tmp", print: Print.new(true))
   end
 
   def touch_file_a
