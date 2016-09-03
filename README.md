@@ -16,14 +16,16 @@ A command line tool to automate development workflow in ORA
 ## Tasks
 
   `new_feature_branch`: Help to create a new branch from up-to-date develop branch
-  
+
   `push_feature_branch`: Help to push your feature branch to remote ready for pull request
-  
+
   `push_to_staging`: Help to push your feature branch to staging
-  
+
   `push_to_uat`: Help to push your feature branch to uat
-  
+
   `push_to_master`: Help to push your feature branch to develop and master branches with a version tag
+
+  `switch_branch`: Help to switch branch without thinking about dirty files`
 
 ## Contributing
 
