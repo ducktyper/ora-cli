@@ -31,7 +31,7 @@ module Ora::Cli
     end
 
     def select command
-      `#{move}#{command} | #{selecta}`
+      `#{move}#{command} | #{selecta}`.strip
     end
 
     def success?

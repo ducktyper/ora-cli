@@ -31,7 +31,9 @@ module Ora::Cli
       "git stash pop #{target_stash_revision}"
     end
     def target_stash_revision
-      @bash.silent("git stash list | grep '#{target_stash_name}' | sed s/:.*//").strip
+      @target_stash_revision ||=
+        @bash.silent("git stash list | grep '#{target_stash_name}' | sed s/:.*//").
+          split("\n").first.to_s.strip
     end
     def target_stash_name
       "On #{target_branch}: OraCli"
