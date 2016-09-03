@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'ora/cli/bash'
+require 'ora/cli/print'
+
+gem_path = File.expand_path('../..', __FILE__)
+
+bash = Ora::Cli::Bash.new(nil, from: gem_path)
+bash.run 'rm /usr/local/bin/ora'
+
+print = Ora::Cli::Print.new
+print.green "\nUninstall finished"
