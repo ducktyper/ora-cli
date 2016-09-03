@@ -5,7 +5,7 @@ module Ora::Cli
     end
 
     def self.selecta
-      File.expand_path('../../../../bin/ora_selecta', __FILE__)
+      File.expand_path('../../../../bin/ora-selecta', __FILE__)
     end
   end
 end
