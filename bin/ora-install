@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'ora/cli/bash'
-require 'ora/cli/print'
+require 'ora/cli'
 
 ora_path = File.expand_path('../ora', __FILE__)
 
