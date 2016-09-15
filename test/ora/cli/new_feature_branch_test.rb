@@ -30,7 +30,7 @@ class NewFeatureBranchTest < Minitest::Test
 
   def test_stop_on_dirty_branch
     dirty_branch(:develop, "dirty.rb")
-    assert subject.run.empty?
+    assert_raises { subject.run }
   end
 
   def test_branch_name_validation

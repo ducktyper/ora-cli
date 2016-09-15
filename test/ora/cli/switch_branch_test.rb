@@ -30,10 +30,7 @@ class SwitchBranchTest < Minitest::Test
 
   def test_only_feature_branch_can_be_dirty
     dirty_branch(:develop, "untracted_file.txt")
-    subject(inputs: ['feature1']).tap do |obj|
-      obj.run
-      assert_equal false, obj.success?
-    end
+    assert_raises { subject(inputs: ['feature1']).run }
   end
 
   def test_no_dirty

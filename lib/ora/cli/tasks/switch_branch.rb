@@ -10,7 +10,7 @@ module Ora::Cli
       :switch_to
       git stash save -u "OraCli"
       git checkout #{target_branch}
-      #{apply_stash}
+      :apply_stash
       '
     end
 
@@ -18,16 +18,19 @@ module Ora::Cli
     def only_feature_branch_can_be_dirty!
       if main_branch? && dirty?
         print.red "#{branch} branch can't be dirty!"
-        return false
+        raise __method__
       end
+      ''
     end
 
     def switch_to
       @target_branch = stdin.select("git branch | grep '^  ' | sed 's/^  //'")
+      ''
     end
 
     def apply_stash
-      return nil if target_stash_revision.empty?
+      return '' if target_stash_revision.empty?
+
       "git stash pop #{target_stash_revision}"
     end
     def target_stash_revision

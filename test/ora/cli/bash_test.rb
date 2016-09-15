@@ -49,7 +49,7 @@ class BashTest < Minitest::Test
 
   def test_call_method_failed
     bash.run '
-      :return_false
+      :return_fail_command
       touch file_b
     '
     assert !`ls tmp`.include?("file_b")
@@ -73,10 +73,11 @@ class BashTest < Minitest::Test
 
   def touch_file_a
     bash.run('touch file_a')
+    ''
   end
 
-  def return_false
-    false
+  def return_fail_command
+    "rm unknown.file"
   end
 
   def inline_method

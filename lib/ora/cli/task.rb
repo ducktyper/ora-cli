@@ -40,15 +40,17 @@ module Ora::Cli
     def feature_branch!
       if main_branch?
         @print.red "Please checkout feature branch first!"
-        false
+        raise __method__
       end
+      ''
     end
 
     def clean_branch!
       if dirty?
         print.red "Please clean the feature branch '#{branch}'!"
-        return false
+        raise __method__
       end
+      ''
     end
     def dirty?
       !@bash.silent('git status').include? 'nothing to commit'

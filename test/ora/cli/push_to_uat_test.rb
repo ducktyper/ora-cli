@@ -44,12 +44,12 @@ class PushToUatTest < Minitest::Test
 
   def test_stop_on_none_feature_branch
     bash_repo('git checkout develop')
-    assert subject.run.empty?
+    assert_raises { subject.run }
   end
 
   def test_stop_on_dirty_branch
     dirty_branch(:feature, "dirty.rb")
-    assert subject.run.empty?
+    assert_raises { subject.run }
   end
 
   private

@@ -33,6 +33,7 @@ module Ora::Cli
       print.inline "New Version: "
       @version = stdin.gets(/^(v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)?$/)
       @version = recommend_version if @version.empty?
+      ''
     end
     def latest_versions
       @latest_versions ||=
@@ -48,6 +49,7 @@ module Ora::Cli
 
     def slack_message_to_paste
       print.plain ":merge: #{branch} => develop\n:merge: develop => master\n:monorail: production"
+      ''
     end
   end
 end

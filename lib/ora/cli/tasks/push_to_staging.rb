@@ -23,6 +23,7 @@ module Ora::Cli
     private
     def slack_message_to_paste
       print.plain ":merge: #{branch} => staging\n:monorail: staging"
+      ''
     end
   end
 end
