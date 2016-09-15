@@ -42,7 +42,7 @@ class BashTest < Minitest::Test
     assert !bash.run('ls').include?('never-create.txt')
   end
 
-  def test_call_method
+  def test_call_command_methods
     bash.run(':touch_file_a')
     assert `ls tmp`.include?("file_a")
   end
@@ -72,8 +72,7 @@ class BashTest < Minitest::Test
   end
 
   def touch_file_a
-    bash.run('touch file_a')
-    ''
+    'touch file_a'
   end
 
   def return_fail_command
