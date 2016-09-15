@@ -23,9 +23,10 @@ module Ora::Cli
         next if command.empty?
 
         if method? command
-          unprocessed_commands.unshift(*extract(call_method command))
+          sub_commands = call_method command
+          unprocessed_commands.unshift(*extract(sub_commands))
         else
-          @success, output = run_single command
+          @success, output = shell command
           outputs.push output
           break unless @success
         end
@@ -71,10 +72,10 @@ module Ora::Cli
       end
     end
 
-    def run_single command
+    def shell command
       @print.green command
 
-      output  = shell command
+      output  = @print.plain `#{move}#{command}#{capture_err}`
       success = $?.success?
 
       alert command unless success
@@ -84,14 +85,8 @@ module Ora::Cli
     def method? command
       command.start_with? ":"
     end
-    def method_name command
-      command.sub(':', '')
-    end
     def call_method command
-       call_target(method_name command)
-    end
-    def shell command
-      @print.plain `#{move}#{command}#{capture_err}`
+       call_target(command.sub(':', ''))
     end
 
     def alert command
