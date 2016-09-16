@@ -60,8 +60,8 @@ module Ora::Cli
       outputs.compact.map(&:strip).reject(&:empty?).join("\n")
     end
 
-    def call_target method_name
-      @target.method(method_name).call
+    def call_target method_name, args = []
+      @target.method(method_name).call(*args)
     end
 
     def complete unprocessed_command
@@ -86,7 +86,10 @@ module Ora::Cli
       command.start_with? ":"
     end
     def call_method command
-       call_target(command.sub(':', ''))
+      list   = command.split
+      method = list.shift.sub(':', '')
+      args   = list.join.split(',').map(&:strip)
+      call_target(method, args)
     end
 
     def alert command

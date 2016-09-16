@@ -47,6 +47,12 @@ class BashTest < Minitest::Test
     assert `ls tmp`.include?("file_a")
   end
 
+  def test_call_command_methods_with_args
+    bash.run(':touch_file file_1, file_2')
+    assert `ls tmp`.include?("file_1")
+    assert `ls tmp`.include?("file_2")
+  end
+
   def test_call_method_failed
     bash.run '
       :return_fail_command
@@ -73,6 +79,10 @@ class BashTest < Minitest::Test
 
   def touch_file_a
     'touch file_a'
+  end
+
+  def touch_file file_1, file_2
+    "touch #{file_1}\ntouch #{file_2}"
   end
 
   def return_fail_command
