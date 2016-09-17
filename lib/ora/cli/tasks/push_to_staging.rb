@@ -1,29 +1,6 @@
-require 'ora/cli/task'
+require 'ora/cli/push_task'
 
 module Ora::Cli
-  class PushToStaging < Task
-
-    def commands
-      '
-      :feature_branch!
-      :clean_branch!
-      git checkout develop
-      git pull origin develop
-      git checkout #{branch}
-      git merge develop
-      git checkout staging
-      git pull origin staging
-      git merge #{branch}
-      git push origin staging
-      git checkout #{branch}
-      :slack_message_to_paste
-      '
-    end
-
-    private
-    def slack_message_to_paste
-      print.plain ":merge: #{branch} => staging\n:monorail: staging"
-      ''
-    end
+  class PushToStaging < PushTask
   end
 end
