@@ -8,6 +8,7 @@ class PushFeatureBranchTest < Minitest::Test
   end
   def teardown
     delete_tmp
+    `rm #{Ora::Cli::Task::CONTINUE_FILE}`
   end
 
   def test_push_feature_branch
@@ -35,6 +36,25 @@ class PushFeatureBranchTest < Minitest::Test
   def test_stop_on_dirty_branch
     dirty_branch(:feature, "dirty.rb")
     assert_raises { subject.run }
+  end
+
+  def test_conflict_save_unprocess_commands
+    commit_remote_branch(:feature, "conflict.rb")
+    bash_repo('
+      touch conflict.rb
+      echo "aaa" > conflict.rb
+      git add -A
+      git commit -m "add conflict.rb"
+    ')
+    subject.run
+
+    continue_hash = JSON.parse(`cat #{Ora::Cli::Task::CONTINUE_FILE}`)
+    assert_equal ["git push origin feature"], continue_hash['commands']
+    assert_equal 'push_feature_branch', continue_hash['task']
+    assert_equal(
+      {"from"=>"tmp/repository", "branch"=>"feature"},
+      continue_hash['variables']
+    )
   end
 
   private
