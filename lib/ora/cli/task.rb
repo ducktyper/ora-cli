@@ -6,7 +6,7 @@ module Ora::Cli
   class Task
     attr_reader :branch, :stdin, :print
 
-    MAIN_BRANCHES = %w{master develop staging uat}
+    MAIN_BRANCHES = %w{master develop staging uat aus}
 
     def initialize(from, inputs: [], print: Print.new)
       @from   = from

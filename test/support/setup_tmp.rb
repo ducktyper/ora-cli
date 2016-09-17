@@ -22,6 +22,8 @@ module SetupTmp
       git push origin staging
       git checkout -b uat
       git push origin uat
+      git checkout -b aus
+      git push origin aus
       git checkout develop
     '
   end
