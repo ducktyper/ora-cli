@@ -6,7 +6,7 @@ module Ora::Cli
   class Task
     attr_reader :branch, :stdin, :print
 
-    MAIN_BRANCHES = %w{master develop staging uat aus}
+    DEVELOP_BRANCH = 'develop'
 
     def initialize(from, inputs: [], print: Print.new)
       @from   = from
@@ -34,7 +34,14 @@ module Ora::Cli
     end
 
     def main_branch?
-      MAIN_BRANCHES.include? branch
+      main_branches.include? branch
+    end
+
+    def main_branches
+      [DEVELOP_BRANCH] +
+      Dir.entries(Path.tasks).
+        map {|name| name.match(/push_to_(.*)\.rb/)}.compact.
+        map {|match| match[1]}
     end
 
     def feature_branch!
