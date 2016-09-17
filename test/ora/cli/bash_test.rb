@@ -42,6 +42,17 @@ class BashTest < Minitest::Test
     assert !bash.run('ls').include?('never-create.txt')
   end
 
+  def test_record_process_on_error
+    bash.run '
+      rm unknown.file
+      touch never-create.txt
+    '
+    assert_equal false, bash.success?
+    assert_equal(
+      ['rm unknown.file', 'touch never-create.txt'],
+      bash.unprocessed_commands)
+  end
+
   def test_call_command_methods
     bash.run(':touch_file_a')
     assert `ls tmp`.include?("file_a")

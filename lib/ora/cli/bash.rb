@@ -3,11 +3,14 @@ require "ora/cli/path"
 
 module Ora::Cli
   class Bash
+    attr_reader :unprocessed_commands
+
     def initialize(target, from: nil, print: Print.new)
-      @target  = target
-      @from    = from
-      @print   = print
-      @success = true
+      @target               = target
+      @from                 = from
+      @print                = print
+      @success              = true
+      @unprocessed_commands = []
     end
 
     def silent command
@@ -16,15 +19,16 @@ module Ora::Cli
 
     def run commands
       @success = true
-      unprocessed_commands = extract commands
+      @unprocessed_commands = extract commands
 
       outputs = []
-      while (command = complete unprocessed_commands.shift)
+      command = ''
+      while (command = complete @unprocessed_commands.shift)
         next if command.empty?
 
         if method? command
           sub_commands = call_method command
-          unprocessed_commands.unshift(*extract(sub_commands))
+          @unprocessed_commands.unshift(*extract(sub_commands))
         else
           @success, output = shell command
           outputs.push output
@@ -32,7 +36,7 @@ module Ora::Cli
         end
       end
 
-      handle_failed unprocessed_commands
+      @unprocessed_commands.unshift(command) unless @success
 
       join outputs
     end
@@ -95,12 +99,6 @@ module Ora::Cli
     def alert command
       @print.red "\nProcess Failed! Please resolve the issue above and run commands below manually\n"
       @print.red command
-    end
-
-    def handle_failed unprocessed_commands
-      unprocessed_commands.each do |unprocessed_command|
-        @print.red(complete unprocessed_command)
-      end
     end
 
   end
