@@ -24,7 +24,7 @@ module Ora::Cli
     end
 
     def continue(info)
-      @stdin.green("Continue task - #{info['task']}")
+      @print.green("Continue task - #{info['task']}")
       variables = info['variables']
       @bash.run info['commands']
       save_on_fail
