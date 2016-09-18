@@ -97,7 +97,7 @@ module Ora::Cli
     end
 
     def show_failed_message
-      @print.red "\nProcess Failed! Please resolve the issue above run 'ora' again to continue\n"
+      @print.red "\nProcess Failed! Please resolve the issue above and run 'ora' again to continue\n"
     end
 
   end
