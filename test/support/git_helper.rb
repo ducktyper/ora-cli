@@ -22,6 +22,16 @@ module GitHelper
     ")
   end
 
+  def commit_branch(branch_name, file_name, content = '')
+    bash_repo("
+      git checkout #{branch_name}
+      touch #{file_name}
+      echo '#{content}' > #{file_name}
+      git add -A
+      git commit -m 'add #{file_name}'
+    ")
+  end
+
   def dirty_branch(branch_name, file_name, content = '')
     bash_repo("
       git checkout #{branch_name}
