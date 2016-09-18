@@ -47,4 +47,9 @@ module GitHelper
   def push_branch(branch_name)
     bash_repo("git push origin #{branch_name}")
   end
+
+  def remote_upto_date(branch_name)
+    bash_repo("git checkout #{branch_name}")
+    bash_repo("git push origin #{branch_name}").include? "Everything up-to-date"
+  end
 end
