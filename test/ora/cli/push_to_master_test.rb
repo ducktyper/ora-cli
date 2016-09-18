@@ -40,6 +40,12 @@ class PushToMasterTest < Minitest::Test
     assert_equal "feature", current_branch
   end
 
+  def test_pull_feature_branch
+    commit_remote_branch(:feature, "remote_file.txt")
+    subject.run
+    assert bash_repo('ls').include? "remote_file.txt"
+  end
+
   def test_stop_on_none_feature_branch
     bash_repo('git checkout develop')
     assert_raises { subject.run.empty? }
