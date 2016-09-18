@@ -1,10 +1,14 @@
 require "ora/cli/version"
 require "ora/cli/bash"
 require "ora/cli/path"
+require "ora/cli/task"
 
 module Ora
   module Cli
     def self.run
+      project_path = `pwd`.strip
+      remove_ext   = "sed 's/\.[^.]*$//'"
+
       unless `cat #{Task::CONTINUE_FILE}`.empty?
         continue = JSON.parse(File.read(File.expand_path(Task::CONTINUE_FILE)))
 
@@ -18,9 +22,6 @@ module Ora
 
         return
       end
-
-      project_path = `pwd`.strip
-      remove_ext   = "sed 's/\.[^.]*$//'"
 
       task = Bash.new(project_path).select("ls #{Path.tasks} | #{remove_ext}")
 

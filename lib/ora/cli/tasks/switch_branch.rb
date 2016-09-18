@@ -18,7 +18,7 @@ module Ora::Cli
     def only_feature_branch_can_be_dirty!
       if main_branch? && dirty?
         print.red "#{branch} branch can't be dirty!"
-        raise __method__
+        raise __method__.to_s
       end
       ''
     end

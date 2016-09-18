@@ -73,7 +73,7 @@ module Ora::Cli
     def feature_branch!
       if main_branch?
         @print.red "Please checkout feature branch first!"
-        raise __method__
+        raise __method__.to_s
       end
       ''
     end
@@ -81,7 +81,7 @@ module Ora::Cli
     def clean_branch!
       if dirty?
         print.red "Please clean the feature branch '#{branch}'!"
-        raise __method__
+        raise __method__.to_s
       end
       ''
     end
