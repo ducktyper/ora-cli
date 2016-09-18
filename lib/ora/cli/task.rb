@@ -28,7 +28,7 @@ module Ora::Cli
 
     def continue(info)
       @print.green("Continue task - #{info['task']}")
-      variables = info['variables']
+      set_variables(info['variables'])
       @bash.run info['commands']
       save_on_fail
       File.delete(File.expand_path(CONTINUE_FILE)) if @bash.success?
@@ -45,8 +45,8 @@ module Ora::Cli
       end
     end
 
-    def variables= data
-      data.each { |k, v| instance_variable_set("@{k}", v) }
+    def set_variables data
+      data.each { |k, v| instance_variable_set("@#{k}", v) }
     end
 
     def commands
