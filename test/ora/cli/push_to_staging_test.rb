@@ -50,12 +50,12 @@ class PushToStagingTest < Minitest::Test
 
   def test_stop_on_none_feature_branch
     bash_repo('git checkout develop')
-    assert_raises { subject.run }
+    assert subject.run.include? "Precondition not met!"
   end
 
   def test_stop_on_dirty_branch
     dirty_branch(:feature, "dirty.rb")
-    assert_raises { subject.run }
+    assert subject.run.include? "Precondition not met!"
   end
 
   private

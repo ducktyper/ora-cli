@@ -1,6 +1,7 @@
 require "ora/cli/bash"
 require "ora/cli/print"
 require "ora/cli/stdin"
+require 'ora/cli/precondition_error'
 require "json"
 
 module Ora::Cli
@@ -21,6 +22,8 @@ module Ora::Cli
     def run
       @bash.run commands
       save_on_fail
+    rescue PreconditionError => e
+      @print.red("Precondition not met!\n#{e.message}")
     end
 
     def continue(info)
@@ -47,7 +50,7 @@ module Ora::Cli
     end
 
     def commands
-      raise "Override this method in subclass"
+      raise PreconditionError, "Override this method in subclass."
     end
 
     def success?
@@ -72,16 +75,15 @@ module Ora::Cli
 
     def feature_branch!
       if main_branch?
-        @print.red "Please checkout feature branch first!"
-        raise __method__.to_s
+        raise PreconditionError, "Please checkout feature branch first."
       end
       ''
     end
 
     def clean_branch!
       if dirty?
-        print.red "Please clean the feature branch '#{branch}'!"
-        raise __method__.to_s
+        raise PreconditionError,
+          "Please clean the feature branch '#{branch}'."
       end
       ''
     end

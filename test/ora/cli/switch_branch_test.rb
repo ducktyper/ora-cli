@@ -30,7 +30,7 @@ class SwitchBranchTest < Minitest::Test
 
   def test_only_feature_branch_can_be_dirty
     dirty_branch(:develop, "untracted_file.txt")
-    assert_raises { subject(inputs: ['feature1']).run }
+    assert subject(inputs: ['feature1']).run.include? "Precondition not met!"
   end
 
   def test_no_dirty

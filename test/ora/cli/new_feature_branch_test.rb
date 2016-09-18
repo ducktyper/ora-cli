@@ -30,7 +30,7 @@ class NewFeatureBranchTest < Minitest::Test
 
   def test_stop_on_dirty_branch
     dirty_branch(:develop, "dirty.rb")
-    assert_raises { subject.run }
+    assert subject.run.include? "Precondition not met!"
   end
 
   def test_branch_name_validation

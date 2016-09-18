@@ -48,12 +48,12 @@ class PushToMasterTest < Minitest::Test
 
   def test_stop_on_none_feature_branch
     bash_repo('git checkout develop')
-    assert_raises { subject.run.empty? }
+    assert subject.run.include? "Precondition not met!"
   end
 
   def test_stop_on_dirty_branch
     dirty_branch(:feature, "dirty.rb")
-    assert_raises { subject.run.empty? }
+    assert subject.run.include? "Precondition not met!"
   end
 
   def test_push_new_version_by_incresing_build_number

@@ -1,4 +1,5 @@
 require 'ora/cli/task'
+require 'ora/cli/precondition_error'
 
 module Ora::Cli
   class SwitchBranch < Task
@@ -17,8 +18,7 @@ module Ora::Cli
     private
     def only_feature_branch_can_be_dirty!
       if main_branch? && dirty?
-        print.red "#{branch} branch can't be dirty!"
-        raise __method__.to_s
+        raise PreconditionError, "#{branch} branch can't be dirty."
       end
       ''
     end
