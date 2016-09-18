@@ -20,14 +20,14 @@ module Ora::Cli
 
     def run
       @bash.run commands
-      unless @bash.success?
-        text = JSON.generate(
-          'task'      => underscore(self.class.name.split(':').last),
-          'variables' => variables,
-          'commands'  => @bash.unprocessed_commands
-        )
-        File.write(File.expand_path(CONTINUE_FILE), text)
-      end
+      save_on_fail
+    end
+
+    def continue(info)
+      variables = info['variables']
+      @bash.run info['commands']
+      save_on_fail
+      File.delete(File.expand_path(CONTINUE_FILE)) if @bash.success?
     end
 
     def variables
@@ -39,6 +39,10 @@ module Ora::Cli
           hash.merge!(attribute.to_s.sub('@', '') => value)
         end
       end
+    end
+
+    def variables= data
+      data.each { |k, v| instance_variable_set("@{k}", v) }
     end
 
     def commands
@@ -91,6 +95,17 @@ module Ora::Cli
     end
     def remote_branch?
       !@bash.silent("git branch -a | grep remotes/origin/#{branch}$").empty?
+    end
+
+    def save_on_fail
+      return if @bash.success?
+
+      text = JSON.generate(
+        'task'      => underscore(self.class.name.split(':').last),
+        'variables' => variables,
+        'commands'  => @bash.unprocessed_commands.join("\n")
+      )
+      File.write(File.expand_path(CONTINUE_FILE), text)
     end
 
     # File activesupport/lib/active_support/inflector/methods.rb

@@ -8,7 +8,7 @@ class PushFeatureBranchTest < Minitest::Test
   end
   def teardown
     delete_tmp
-    `rm #{Ora::Cli::Task::CONTINUE_FILE}`
+    bash_repo("rm #{Ora::Cli::Task::CONTINUE_FILE}")
   end
 
   def test_push_feature_branch
@@ -44,23 +44,22 @@ class PushFeatureBranchTest < Minitest::Test
     assert_raises { subject.run }
   end
 
-  def test_conflict_save_unprocess_commands
-    commit_remote_branch(:feature, "conflict.rb")
-    bash_repo('
-      touch conflict.rb
-      echo "aaa" > conflict.rb
-      git add -A
-      git commit -m "add conflict.rb"
-    ')
+  def test_conflict_continue_unprocess_commands
+    commit_remote_branch(:feature, "conflict.rb", "from_remote")
+    commit_branch(:feature, "conflict.rb", "from_local")
     subject.run
 
+    assert_equal true, File.exist?(File.expand_path(Ora::Cli::Task::CONTINUE_FILE))
+
+    # resolve conflict
+    bash_repo('echo "change2" > conflict.rb')
+    bash_repo('git add -A && git commit -m "merge"')
+
     continue_hash = JSON.parse(`cat #{Ora::Cli::Task::CONTINUE_FILE}`)
-    assert_equal ["git push origin feature"], continue_hash['commands']
-    assert_equal 'push_feature_branch', continue_hash['task']
-    assert_equal(
-      {"from"=>"tmp/repository", "branch"=>"feature"},
-      continue_hash['variables']
-    )
+    subject.continue(continue_hash)
+
+    assert_equal true, remote_upto_date(:feature)
+    assert_equal false, File.exist?(File.expand_path(Ora::Cli::Task::CONTINUE_FILE))
   end
 
   private
