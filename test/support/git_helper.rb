@@ -10,10 +10,11 @@ module GitHelper
     ")
   end
 
-  def commit_remote_branch(branch_name, file_name)
+  def commit_remote_branch(branch_name, file_name, content = '')
     bash_repo("
       git checkout #{branch_name}
       touch #{file_name}
+      echo '#{content}' > #{file_name}
       git add -A
       git commit -m 'add #{file_name}'
       git push origin #{branch_name}
@@ -21,10 +22,11 @@ module GitHelper
     ")
   end
 
-  def dirty_branch(branch_name, file_name)
+  def dirty_branch(branch_name, file_name, content = '')
     bash_repo("
       git checkout #{branch_name}
       touch #{file_name}
+      echo '#{content}' > #{file_name}
     ")
   end
 
