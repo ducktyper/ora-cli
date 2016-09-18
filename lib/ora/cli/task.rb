@@ -84,6 +84,15 @@ module Ora::Cli
       !@bash.silent('git status').include? 'nothing to commit'
     end
 
+    def pull_branch
+      return '' unless remote_branch?
+
+      "git pull origin #{branch}"
+    end
+    def remote_branch?
+      !@bash.silent("git branch -a | grep remotes/origin/#{branch}$").empty?
+    end
+
     # File activesupport/lib/active_support/inflector/methods.rb
     def underscore(camel_cased_word)
       return camel_cased_word unless camel_cased_word =~ /[A-Z-]|::/
