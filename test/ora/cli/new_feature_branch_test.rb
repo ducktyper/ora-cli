@@ -28,6 +28,10 @@ class NewFeatureBranchTest < Minitest::Test
     assert bash_repo('ls').include? "develop.rb"
   end
 
+  def test_stop_if_branch_already_exists
+    assert subject(["develop"]).run.include? "Precondition not met!"
+  end
+
   def test_stop_on_dirty_branch
     dirty_branch(:develop, "dirty.rb")
     assert subject.run.include? "Precondition not met!"

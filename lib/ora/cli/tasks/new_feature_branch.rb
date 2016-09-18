@@ -7,6 +7,7 @@ module Ora::Cli
     def commands
       '
       :set_branch_name
+      :new_branch!
       :clean_branch!
       git checkout develop
       git pull origin develop
@@ -18,6 +19,13 @@ module Ora::Cli
     def set_branch_name
       print.inline 'Type new branch name: '
       @branch_name = stdin.gets(/^[a-zA-Z0-9\/_-]+$/)
+      ''
+    end
+
+    def new_branch!
+      unless @bash.silent("git branch | grep \\\s#{branch_name}$").empty?
+        raise PreconditionError, "Branch already exists."
+      end
       ''
     end
   end
