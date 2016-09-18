@@ -82,7 +82,7 @@ module Ora::Cli
       output  = @print.plain `#{move}#{command}#{capture_err}`
       success = $?.success?
 
-      alert command unless success
+      show_failed_message unless success
 
       [success, output]
     end
@@ -96,9 +96,8 @@ module Ora::Cli
       call_target(method, args)
     end
 
-    def alert command
-      @print.red "\nProcess Failed! Please resolve the issue above and run commands below manually\n"
-      @print.red command
+    def show_failed_message
+      @print.red "\nProcess Failed! Please resolve the issue above run 'ora' again to continue\n"
     end
 
   end
