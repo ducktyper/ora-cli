@@ -41,11 +41,12 @@ module Ora::Cli
         @bash.silent('git tag').split("\n").
           select {|tag| tag.match(/^v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/)}.
           map    {|tag| Gem::Version.create(tag.sub(/^v/, ''))}.sort.last(5).
-          map    {|ver| "v#{ver}"}
+          map    {|ver| "v#{ver}"}.join("\n")
     end
     def recommend_version
       @recommend_version ||=
-        latest_versions.last.to_s.sub(/\.(\d+)$/, '.') + ($1.to_i + 1).to_s
+        latest_versions.split("\n").last.to_s.
+          sub(/\.(\d+)$/, '.') + ($1.to_i + 1).to_s
     end
 
     def slack_message_to_paste
