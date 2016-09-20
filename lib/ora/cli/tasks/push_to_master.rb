@@ -18,8 +18,6 @@ module Ora::Cli
       git push origin master
       git fetch --tags
       :set_version
-      git tag -a "#{version}" -m "#{branch}"
-      git push --tags
       git checkout #{branch}
       :apply_stash
       :slack_message_to_paste
@@ -28,13 +26,20 @@ module Ora::Cli
 
     private
     def set_version
+      return '' if tag_message.empty?
+
       print.plain "Latest versions:"
       print.plain latest_versions
+      print.plain tag_message
       print.plain "Enter to use #{recommend_version} or type new version:"
       print.inline "New Version: "
       @version = stdin.gets(/^(v[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)?$/)
       @version = recommend_version if @version.empty?
-      ''
+
+      '
+      git tag -a "#{version}" -m "#{tag_message}"
+      git push --tags
+      '
     end
     def latest_versions
       @latest_versions ||=
@@ -43,10 +48,11 @@ module Ora::Cli
           map    {|tag| Gem::Version.create(tag.sub(/^v/, ''))}.sort.last(5).
           map    {|ver| "v#{ver}"}.join("\n")
     end
+    def latest_version
+      @latest_version ||= latest_versions.split("\n").last.to_s
+    end
     def recommend_version
-      @recommend_version ||=
-        latest_versions.split("\n").last.to_s.
-          sub(/\.(\d+)$/, '.') + ($1.to_i + 1).to_s
+      @recommend_version ||= latest_version.sub(/\.(\d+)$/, '.') + ($1.to_i + 1).to_s
     end
 
     def slack_message_to_paste
@@ -66,6 +72,21 @@ module Ora::Cli
     end
     def target_stash_name
       "On #{branch}: OraCli"
+    end
+
+    def tag_message
+      return @tag_message if @tag_message
+      messages = []
+      @bash.silent("git log --merges --pretty=oneline #{latest_version}..HEAD").split("\n").each do |commit|
+        match = commit.match(/^[0-9a-z]+ Merge pull request #(\d+) from (.*)$/)
+        next if match.nil?
+
+        pull_request = match[1]
+        branch_name  = match[2]
+
+        messages << "#{pull_request} #{branch_name}"
+      end
+      @tag_message = messages.join("\n")
     end
   end
 end
