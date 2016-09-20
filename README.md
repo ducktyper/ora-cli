@@ -29,7 +29,7 @@ A command line tool to automate development workflow in ORA
 
   `push_to_uat`: Help to push your feature branch to uat
 
-  `push_to_master`: Help to push your feature branch to develop and master branches with a version tag
+  `push_to_master`: Help to push develop to master with a version tag with a message including all new pull requests from the previous tag
 
   `switch_branch`: Help to switch branch without thinking about dirty files
 
