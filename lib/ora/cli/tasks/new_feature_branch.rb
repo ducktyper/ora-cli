@@ -8,7 +8,8 @@ module Ora::Cli
       '
       :set_branch_name
       :new_branch!
-      :clean_branch!
+      :clean_on_main_branch!
+      git stash save -u "OraCli"
       git checkout develop
       git pull origin develop
       git checkout -b #{branch_name}

@@ -87,6 +87,10 @@ module Ora::Cli
       end
       ''
     end
+    def clean_on_main_branch!
+      return '' unless main_branch?
+      clean_branch!
+    end
     def dirty?
       !@bash.silent('git status').include? 'nothing to commit'
     end
