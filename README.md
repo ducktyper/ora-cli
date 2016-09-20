@@ -31,7 +31,7 @@ A command line tool to automate development workflow in ORA
 
   `push_to_master`: Help to push your feature branch to develop and master branches with a version tag
 
-  `switch_branch`: Help to switch branch without thinking about dirty files`
+  `switch_branch`: Help to switch branch without thinking about dirty files
 
 ## Contributing
 
