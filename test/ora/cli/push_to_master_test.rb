@@ -6,15 +6,17 @@ class PushToMasterTest < Minitest::Test
     reset_tmp
     set_versions
     work_on_feature_branch
+    accept_pull_request
   end
   def teardown
     delete_tmp
   end
 
-  def test_merge_to_develop
+  def test_stash_save_and_pop
+    bash_repo('git checkout -b feature2')
+    dirty_branch(:feature2, "dirty.rb")
     subject.run
-    checkout(:develop)
-    assert bash_repo('ls').include? "test.txt"
+    assert bash_repo('ls').include? "dirty.rb"
   end
 
   def test_push_develop
@@ -40,19 +42,8 @@ class PushToMasterTest < Minitest::Test
     assert_equal "feature", current_branch
   end
 
-  def test_pull_feature_branch
-    commit_remote_branch(:feature, "remote_file.txt")
-    subject.run
-    assert bash_repo('ls').include? "remote_file.txt"
-  end
-
-  def test_stop_on_none_feature_branch
-    bash_repo('git checkout develop')
-    assert subject.run.include? "Precondition not met!"
-  end
-
-  def test_stop_on_dirty_branch
-    dirty_branch(:feature, "dirty.rb")
+  def test_stop_on_dirty_main_branch
+    dirty_branch(:develop, "dirty.rb")
     assert subject.run.include? "Precondition not met!"
   end
 
@@ -74,6 +65,14 @@ class PushToMasterTest < Minitest::Test
   private
   def subject(inputs = [''])
     PushToMaster.new(REPOSITORY, inputs: inputs, print: Print.new(true))
+  end
+
+  def accept_pull_request
+    bash_repo('
+      git checkout develop
+      git merge feature -m "Merge pull request #1 from feature"
+      git checkout feature
+    ')
   end
 
   def work_on_feature_branch

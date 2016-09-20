@@ -6,9 +6,8 @@ module Ora::Cli
 
     def commands
       '
-      :feature_branch!
-      :clean_branch!
-      :pull_branch
+      :clean_on_main_branch!
+      git stash save -u "OraCli"
       git checkout develop
       git pull origin develop
       git merge #{branch}
@@ -19,9 +18,10 @@ module Ora::Cli
       git push origin master
       git fetch --tags
       :set_version
-      git checkout #{branch}
       git tag -a "#{version}" -m "#{branch}"
       git push --tags
+      git checkout #{branch}
+      :apply_stash
       :slack_message_to_paste
       '
     end
@@ -52,6 +52,20 @@ module Ora::Cli
     def slack_message_to_paste
       print.plain ":merge: #{branch} => develop\n:merge: develop => master\n:monorail: production"
       ''
+    end
+
+    def apply_stash
+      return '' if target_stash_revision.empty?
+
+      "git stash pop #{target_stash_revision}"
+    end
+    def target_stash_revision
+      @target_stash_revision ||=
+        @bash.silent("git stash list | grep '#{target_stash_name}' | sed s/:.*//").
+          split("\n").first.to_s.strip
+    end
+    def target_stash_name
+      "On #{branch}: OraCli"
     end
   end
 end
