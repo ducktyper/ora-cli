@@ -6,17 +6,18 @@ require "json"
 
 module Ora::Cli
   class Task
-    attr_reader :branch, :stdin, :print
+    attr_reader :branch, :stdin, :print, :develop_branch
 
-    DEVELOP_BRANCH = 'develop'
+    DEFAULT_DEVELOP_BRANCH = 'develop'
     CONTINUE_FILE  = '~/.ora_continue'
 
-    def initialize(from, inputs: [], print: Print.new)
-      @from   = from
-      @bash   = Bash.new(self, from: @from, print: print)
-      @branch = current_branch
-      @stdin  = Stdin.new(bash: @bash, print: print, inputs: inputs)
-      @print  = print
+    def initialize(from, inputs: [], print: Print.new, develop_branch: nil)
+      @from           = from
+      @bash           = Bash.new(self, from: @from, print: print)
+      @branch         = current_branch
+      @stdin          = Stdin.new(bash: @bash, print: print, inputs: inputs)
+      @print          = print
+      @develop_branch = develop_branch || DEFAULT_DEVELOP_BRANCH
     end
 
     def run
@@ -67,7 +68,7 @@ module Ora::Cli
     end
 
     def main_branches
-      [DEVELOP_BRANCH] +
+      [DEFAULT_DEVELOP_BRANCH, develop_branch].uniq +
       Dir.entries(Path.tasks).
         map {|name| name.match(/push_to_(.*)\.rb/)}.compact.
         map {|match| match[1]}
