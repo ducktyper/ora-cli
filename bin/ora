@@ -3,4 +3,4 @@
 
 require 'ora/cli'
 
-Ora::Cli.run
+Ora::Cli.run(ARGV[0])

@@ -5,7 +5,7 @@ require "ora/cli/task"
 
 module Ora
   module Cli
-    def self.run
+    def self.run(custom_develop_branch)
       project_path = `pwd`.strip
       remove_ext   = "sed 's/\.[^.]*$//'"
 
@@ -17,7 +17,7 @@ module Ora
 
         class_name = task.split('_').map(&:capitalize).join
         Object.const_get("Ora::Cli::#{class_name}").
-          new(project_path).
+          new(project_path, develop_branch: custom_develop_branch).
           continue(continue)
 
         return
