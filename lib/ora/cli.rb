@@ -27,7 +27,8 @@ module Ora
 
       require "ora/cli/tasks/#{task}"
       class_name = task.split('_').map(&:capitalize).join
-      Object.const_get("Ora::Cli::#{class_name}").new(project_path).run
+      Object.const_get("Ora::Cli::#{class_name}").
+        new(project_path, develop_branch: custom_develop_branch).run
     end
   end
 end
