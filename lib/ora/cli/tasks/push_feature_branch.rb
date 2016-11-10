@@ -7,10 +7,10 @@ module Ora::Cli
       :feature_branch!
       :clean_branch!
       :pull_branch
-      git checkout develop
-      git pull origin develop
+      git checkout #{develop_branch}
+      git pull origin #{develop_branch}
       git checkout #{branch}
-      git merge develop
+      git merge #{develop_branch}
       git push origin #{branch}
       '
     end
