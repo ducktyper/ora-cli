@@ -35,6 +35,10 @@ module GitHelper
     bash_repo("git checkout #{branch_name}")
   end
 
+  def current_branch
+    bash_repo('git branch | grep \\*').sub("*", "").strip
+  end
+
   def push_branch(branch_name)
     bash_repo("git push origin #{branch_name}")
   end

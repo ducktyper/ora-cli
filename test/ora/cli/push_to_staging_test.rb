@@ -67,8 +67,4 @@ class PushToStagingTest < Minitest::Test
     bash_repo('git checkout -b feature')
     commit_branch(:feature, "test.txt")
   end
-
-  def current_branch
-    bash_repo('git branch | grep \\*').sub("*", "").strip
-  end
 end

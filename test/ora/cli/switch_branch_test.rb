@@ -55,8 +55,4 @@ class SwitchBranchTest < Minitest::Test
     bash_repo('git checkout -b feature2')
     bash_repo('touch untracted_file.txt')
   end
-
-  def current_branch
-    bash_repo('git branch | grep \\*').sub("*", "").strip
-  end
 end

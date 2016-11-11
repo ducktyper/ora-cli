@@ -111,10 +111,6 @@ class PushToMasterTest < Minitest::Test
     ')
   end
 
-  def current_branch
-    bash_repo('git branch | grep \\*').sub("*", "").strip
-  end
-
   def remote_tags
     bash_repo('
       git checkout master
