@@ -50,8 +50,16 @@ class NewFeatureBranchTest < Minitest::Test
     assert bash_repo('git status').include? "azAZ09/-_"
   end
 
+  def test_custom_develop_branch
+    bash_repo("git checkout -b sprint01")
+    commit_branch(:sprint01, "sprint01.rb")
+    subject(develop_branch: "sprint01").run
+    assert bash_repo('ls').include? "sprint01.rb"
+  end
+
   private
-  def subject(inputs = ["new_feature"])
-    NewFeatureBranch.new(REPOSITORY, inputs: inputs, print: Print.new(true))
+  def subject(inputs = ["new_feature"], develop_branch: nil)
+    NewFeatureBranch.new(REPOSITORY, inputs: inputs,
+                         print: Print.new(true), develop_branch: develop_branch)
   end
 end

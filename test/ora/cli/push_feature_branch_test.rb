@@ -62,9 +62,20 @@ class PushFeatureBranchTest < Minitest::Test
     assert_equal false, File.exist?(File.expand_path(Ora::Cli::Task::CONTINUE_FILE))
   end
 
+  def test_custom_develop_branch
+    bash_repo("git checkout -b sprint01")
+    commit_remote_branch(:sprint01, "sprint01.rb", "from_remote")
+
+    checkout('feature')
+    subject(develop_branch: "sprint01").run
+    assert_equal "feature", current_branch
+    assert bash_repo('ls').include? "sprint01.rb"
+  end
+
   private
-  def subject
-    PushFeatureBranch.new(REPOSITORY, print: Print.new(true))
+  def subject(develop_branch: nil)
+    PushFeatureBranch.new(REPOSITORY, print: Print.new(true),
+                         develop_branch: develop_branch)
   end
 
   def work_on_feature_branch
