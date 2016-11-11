@@ -49,9 +49,9 @@ Useful when we need a second develop branch.
     $ ora
 
 When a task is failed, you can resolve the issue and run `ora` again to continue.
-Ora-cli uses a file `~/ora_continue` to save the state when a task is failed.
+Ora-cli uses a file `~/.ora_continue` to save the state when a task is failed.
 
-> To continue failed task with custom develop branch, you need to type the branch name as an argument.
+> To continue a failed task using custom develop branch, you need to type the custom branch name as an argument.
 
 ## Contributing
 
