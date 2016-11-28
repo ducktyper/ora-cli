@@ -33,7 +33,7 @@ class DeleteFeatureBranchTest < Minitest::Test
 
   private
   def subject
-    @subject ||= DeleteFeatureBranct.new(REPOSITORY, print: Print.new(true))
+    @subject ||= DeleteFeatureBranch.new(REPOSITORY, print: Print.new(true))
   end
 
   def work_on_feature_branch
