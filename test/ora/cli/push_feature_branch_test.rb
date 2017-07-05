@@ -8,7 +8,6 @@ class PushFeatureBranchTest < Minitest::Test
   end
   def teardown
     delete_tmp
-    bash_repo("rm #{Ora::Cli::Task::CONTINUE_FILE}")
   end
 
   def test_push_feature_branch
@@ -44,22 +43,10 @@ class PushFeatureBranchTest < Minitest::Test
     assert subject.run.include? "Precondition not met!"
   end
 
-  def test_conflict_continue_unprocess_commands
+  def test_show_unprocess_commands_on_fail
     commit_remote_branch(:feature, "conflict.rb", "from_remote")
     commit_branch(:feature, "conflict.rb", "from_local")
-    subject.run
-
-    assert_equal true, File.exist?(File.expand_path(Ora::Cli::Task::CONTINUE_FILE))
-
-    # resolve conflict
-    bash_repo('echo "change2" > conflict.rb')
-    bash_repo('git add -A && git commit -m "merge"')
-
-    continue_hash = JSON.parse(`cat #{Ora::Cli::Task::CONTINUE_FILE}`)
-    subject.continue(continue_hash)
-
-    assert_equal true, remote_upto_date(:feature)
-    assert_equal false, File.exist?(File.expand_path(Ora::Cli::Task::CONTINUE_FILE))
+    subject.run.include? "Failed commands:\ngit pull origin feature"
   end
 
   def test_custom_develop_branch

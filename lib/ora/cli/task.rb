@@ -9,7 +9,6 @@ module Ora::Cli
     attr_reader :branch, :stdin, :print, :develop_branch
 
     DEFAULT_DEVELOP_BRANCH = 'develop'
-    CONTINUE_FILE  = '~/.ora_continue'
 
     def initialize(from, inputs: [], print: Print.new, develop_branch: nil)
       @from           = from
@@ -25,29 +24,6 @@ module Ora::Cli
       save_on_fail
     rescue PreconditionError => e
       @print.red("Precondition not met!\n#{e.message}")
-    end
-
-    def continue(info)
-      @print.green("Continue task - #{info['task']}\n")
-      set_variables(info['variables'])
-      @bash.run info['commands']
-      save_on_fail
-      File.delete(File.expand_path(CONTINUE_FILE)) if @bash.success?
-    end
-
-    def variables
-      instance_variables.inject({}) do |hash, attribute|
-        value = instance_variable_get(attribute)
-        if value.to_s.start_with? '#<'
-          hash
-        else
-          hash.merge!(attribute.to_s.sub('@', '') => value)
-        end
-      end
-    end
-
-    def set_variables data
-      data.each { |k, v| instance_variable_set("@#{k}", v) }
     end
 
     def commands
@@ -108,12 +84,7 @@ module Ora::Cli
     def save_on_fail
       return if @bash.success?
 
-      text = JSON.generate(
-        'task'      => underscore(self.class.name.split(':').last),
-        'variables' => variables,
-        'commands'  => @bash.unprocessed_commands.join("\n")
-      )
-      File.write(File.expand_path(CONTINUE_FILE), text)
+      @print.red("Failed commands:\n#{@bash.unprocessed_commands.join("\n")}")
     end
 
     # File activesupport/lib/active_support/inflector/methods.rb
