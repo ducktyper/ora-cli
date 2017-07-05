@@ -44,15 +44,6 @@ Useful when we need a second develop branch.
 
 > push_to_master will still push from develop to master.
 
-## Error handling
-
-    $ ora
-
-When a task is failed, you can resolve the issue and run `ora` again to continue.
-Ora-cli uses a file `~/.ora_continue` to save the state when a task is failed.
-
-> To continue a failed task using custom develop branch, you need to type the custom branch name as an argument.
-
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/ducktyper/ora-cli.
